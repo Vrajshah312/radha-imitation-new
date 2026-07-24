@@ -5,12 +5,12 @@ export default function Profile() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="profile-page container">
+    <div className="profile-page container" data-testid="profile-page">
       <div className="profile-header">
         <div className="profile-avatar">{user?.name?.charAt(0).toUpperCase()}</div>
         <div>
-          <span className="eyebrow">My Account</span>
-          <h1>Hi, {user?.name?.split(" ")[0]}</h1>
+          <span className="eyebrow eyebrow-mute">My Account · Member</span>
+          <h1>Hi, <em>{user?.name?.split(" ")[0]}.</em></h1>
         </div>
       </div>
 
@@ -48,8 +48,8 @@ export default function Profile() {
         </div>
       </div>
 
-      <button className="btn btn-outline" onClick={logout}>
-        Sign Out
+      <button className="btn btn-outline" onClick={logout} data-testid="profile-signout">
+        <span>Sign Out →</span>
       </button>
     </div>
   );

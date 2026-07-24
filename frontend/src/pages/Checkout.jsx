@@ -30,9 +30,6 @@ export default function Checkout() {
 
   async function handlePlaceOrder(e) {
     e.preventDefault();
-    // Demo checkout — no real payment gateway is wired up, but the order
-    // is genuinely created on the backend so it shows up in the admin
-    // dashboard's order management.
     setError("");
     setSubmitting(true);
     try {
@@ -51,16 +48,16 @@ export default function Checkout() {
 
   if (placed) {
     return (
-      <div className="checkout-success container">
-        <div className="gold-ring success-ring" />
-        <span className="eyebrow">Order Confirmed</span>
-        <h1>Thank you, {form.fullName.split(" ")[0] || "there"}!</h1>
+      <div className="checkout-success container" data-testid="checkout-success">
+        <div className="checkout-success-tick">✓</div>
+        <span className="eyebrow eyebrow-mute">Order Confirmed</span>
+        <h1>Thank you, <em>{form.fullName.split(" ")[0] || "friend"}.</em></h1>
         <p>
-          Your order has been placed (demo mode — no live payment was
-          processed). A confirmation would normally be sent to your email.
+          Your order has been logged in the archive. This is a demo — no live
+          payment was processed. A confirmation would normally be sent to your email.
         </p>
-        <button className="btn btn-primary" onClick={() => navigate("/shop")}>
-          Continue Shopping
+        <button className="btn" onClick={() => navigate("/shop")} data-testid="checkout-success-continue">
+          <span>Continue Shopping →</span>
         </button>
       </div>
     );
@@ -69,10 +66,10 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="checkout-success container">
-        <h1>Your bag is empty</h1>
+        <h1>Your bag is <em>empty.</em></h1>
         <p>Add a few pieces to your bag before checking out.</p>
-        <button className="btn btn-primary" onClick={() => navigate("/shop")}>
-          Shop Now
+        <button className="btn" onClick={() => navigate("/shop")}>
+          <span>Shop Now →</span>
         </button>
       </div>
     );
@@ -81,55 +78,56 @@ export default function Checkout() {
   return (
     <div className="checkout-page container">
       <div className="checkout-heading">
-        <span className="eyebrow">Almost There</span>
-        <h1>Checkout</h1>
+        <span className="eyebrow eyebrow-mute">Almost There · Step 03</span>
+        <h1>Check<em>out.</em></h1>
       </div>
 
       <div className="checkout-layout">
-        <form className="checkout-form" onSubmit={handlePlaceOrder}>
+        <form className="checkout-form" onSubmit={handlePlaceOrder} data-testid="checkout-form">
           <h3>Shipping Details</h3>
           <div className="form-field">
             <label>Full Name</label>
-            <input name="fullName" required value={form.fullName} onChange={handleChange} />
+            <input name="fullName" required value={form.fullName} onChange={handleChange} data-testid="checkout-fullName" />
           </div>
           <div className="form-field">
             <label>Address</label>
-            <input name="address" required value={form.address} onChange={handleChange} />
+            <input name="address" required value={form.address} onChange={handleChange} data-testid="checkout-address" />
           </div>
           <div className="checkout-form-row">
             <div className="form-field">
               <label>City</label>
-              <input name="city" required value={form.city} onChange={handleChange} />
+              <input name="city" required value={form.city} onChange={handleChange} data-testid="checkout-city" />
             </div>
             <div className="form-field">
               <label>State</label>
-              <input name="state" required value={form.state} onChange={handleChange} />
+              <input name="state" required value={form.state} onChange={handleChange} data-testid="checkout-state" />
             </div>
           </div>
           <div className="checkout-form-row">
             <div className="form-field">
               <label>Pincode</label>
-              <input name="pincode" required value={form.pincode} onChange={handleChange} />
+              <input name="pincode" required value={form.pincode} onChange={handleChange} data-testid="checkout-pincode" />
             </div>
             <div className="form-field">
               <label>Phone</label>
-              <input name="phone" required value={form.phone} onChange={handleChange} />
+              <input name="phone" required value={form.phone} onChange={handleChange} data-testid="checkout-phone" />
             </div>
           </div>
 
           <h3>Payment</h3>
           <div className="payment-note">
-            This is a demo store — no real payment gateway is connected. Placing
-            an order simply confirms the flow end-to-end.
+            This is a demo storefront — no live payment gateway is connected.
+            Placing an order simply confirms the checkout flow end-to-end.
           </div>
           {error && <div className="form-error">{error}</div>}
 
-          <button className="btn btn-primary btn-block" type="submit" disabled={submitting}>
-            {submitting ? "Placing Order…" : `Place Order — ₹${grandTotal.toLocaleString("en-IN")}`}
+          <button className="btn btn-block" type="submit" disabled={submitting} data-testid="checkout-place-order">
+            <span>{submitting ? "Placing Order…" : `Place Order — ₹${grandTotal.toLocaleString("en-IN")} →`}</span>
           </button>
         </form>
 
         <div className="checkout-summary">
+          <span className="eyebrow eyebrow-mute">Ledger</span>
           <h3>Order Summary</h3>
           {items.map((item) => (
             <div className="checkout-line" key={item.id}>
@@ -139,9 +137,9 @@ export default function Checkout() {
               <span>₹{(item.price * item.qty).toLocaleString("en-IN")}</span>
             </div>
           ))}
-          <div className="summary-row">
+          <div className="summary-row" style={{ marginTop: 12 }}>
             <span>Shipping</span>
-            <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
+            <span>{shipping === 0 ? "Complimentary" : `₹${shipping}`}</span>
           </div>
           <div className="summary-row summary-total">
             <span>Total</span>

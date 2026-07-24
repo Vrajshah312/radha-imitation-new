@@ -31,14 +31,13 @@ export default function ProductDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="page-loader">Loading product…</div>;
+  if (loading) return <div className="page-loader">Loading piece…</div>;
   if (!product) {
     return (
-      <div className="container" style={{ padding: "80px 0", textAlign: "center" }}>
-        <h2>Product not found</h2>
-        <Link to="/shop" className="btn btn-outline">
-          Back to Shop
-        </Link>
+      <div className="container" style={{ padding: "120px 0", textAlign: "center" }}>
+        <span className="eyebrow eyebrow-mute">404</span>
+        <h2 style={{ margin: "16px 0 20px" }}>Piece not found</h2>
+        <Link to="/shop" className="btn btn-outline"><span>Back to archive →</span></Link>
       </div>
     );
   }
@@ -54,29 +53,38 @@ export default function ProductDetail() {
   return (
     <div className="pdp">
       <div className="container pdp-grid">
-        <div className="pdp-gallery">
-          <div className="pdp-main-image">
-            <img src={product.images[activeImage]} alt={product.name} />
-          </div>
+        <div className="pdp-gallery" data-testid="pdp-gallery">
           <div className="pdp-thumbs">
             {product.images.map((img, i) => (
               <button
-                key={img}
+                key={img + i}
                 className={`pdp-thumb ${activeImage === i ? "is-active" : ""}`}
                 onClick={() => setActiveImage(i)}
+                data-testid={`pdp-thumb-${i}`}
               >
                 <img src={img} alt="" />
               </button>
             ))}
           </div>
+          <div className="pdp-main-image">
+            <img src={product.images[activeImage]} alt={product.name} />
+          </div>
         </div>
 
         <div className="pdp-info">
+          <div className="pdp-meta-top">
+            <span>RJ · {product.id}</span>
+            <em>{product.category.replace("-", " ")}</em>
+            <span>№ {String(product.reviews).padStart(3, "0")}</span>
+          </div>
+
           <div className="pdp-badges">
             {product.isNew && <span className="badge badge-new">New</span>}
             {product.isBestseller && <span className="badge badge-best">Bestseller</span>}
           </div>
-          <h1>{product.name}</h1>
+
+          <h1 data-testid="pdp-title">{product.name}</h1>
+
           <div className="pdp-rating">
             {"★".repeat(Math.round(product.rating))}
             {"☆".repeat(5 - Math.round(product.rating))}
@@ -97,47 +105,60 @@ export default function ProductDetail() {
               <p>{product.material}</p>
             </div>
             <div>
-              <span>Available Colours</span>
+              <span>Colours</span>
               <p>{product.colors.join(", ")}</p>
             </div>
             <div>
               <span>Availability</span>
-              <p>{product.stock > 0 ? `In stock (${product.stock} left)` : "Out of stock"}</p>
+              <p>{product.stock > 0 ? `In stock — ${product.stock} left` : "Out of stock"}</p>
+            </div>
+            <div>
+              <span>Subcategory</span>
+              <p style={{ textTransform: "capitalize" }}>{product.subcategory.replace("-", " ")}</p>
             </div>
           </div>
 
           <div className="pdp-actions">
-            <div className="qty-stepper">
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))}>–</button>
-              <span>{qty}</span>
-              <button onClick={() => setQty((q) => Math.min(product.stock, q + 1))}>+</button>
+            <div className="qty-stepper" data-testid="pdp-qty">
+              <button onClick={() => setQty((q) => Math.max(1, q - 1))} data-testid="pdp-qty-decrease">–</button>
+              <span data-testid="pdp-qty-value">{qty}</span>
+              <button onClick={() => setQty((q) => Math.min(product.stock, q + 1))} data-testid="pdp-qty-increase">+</button>
             </div>
-            <button className="btn btn-primary" onClick={handleAdd} disabled={product.stock === 0}>
-              {added ? "Added ✓" : "Add to Bag"}
+            <button
+              className="btn"
+              onClick={handleAdd}
+              disabled={product.stock === 0}
+              data-testid="pdp-add-to-bag"
+            >
+              <span>{added ? "Added ✓" : "Add to Bag →"}</span>
             </button>
           </div>
 
           <ul className="pdp-trust">
-            <li>Anti-tarnish, nickel-free plating</li>
-            <li>7-day easy returns &amp; exchange</li>
-            <li>Dispatched within 2–3 business days</li>
+            <li>Anti-tarnish plating</li>
+            <li>Nickel-free, skin-kind</li>
+            <li>Seven-day returns</li>
+            <li>Ships in 2–3 days</li>
           </ul>
         </div>
       </div>
 
       {related.length > 0 && (
-        <section className="section pdp-related">
-          <div className="container">
-            <div className="section-head">
-              <span className="eyebrow">You May Also Like</span>
-              <h2>Complete the look</h2>
-              <div className="divider" />
+        <section className="container pdp-related">
+          <div className="chapter-head">
+            <span className="chapter-index">↳</span>
+            <div className="chapter-title-wrap">
+              <span className="eyebrow eyebrow-mute">Complete the look</span>
+              <h2 className="chapter-title">
+                Related <em>editions.</em>
+              </h2>
             </div>
-            <div className="product-grid">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+            <span />
+          </div>
+          <div className="product-grid">
+            {related.map((p, idx) => (
+              <ProductCard key={p.id} product={p} index={idx} />
+            ))}
           </div>
         </section>
       )}

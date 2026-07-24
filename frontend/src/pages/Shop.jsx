@@ -45,98 +45,120 @@ export default function Shop() {
   const activeCategory = categories.find((c) => c.id === categoryId);
   const activeSub = activeCategory?.subcategories.find((s) => s.id === subcategoryId);
 
-  let title = "Shop All";
-  if (search) title = `Results for "${search}"`;
-  else if (activeSub) title = activeSub.name;
-  else if (activeCategory) title = activeCategory.name;
-  else if (bestseller) title = "Bestsellers";
-  else if (isNew) title = "New Arrivals";
+  let title = "The Archive";
+  let subtitle = "Every piece we make.";
+  if (search) { title = `“${search}”`; subtitle = "Search results"; }
+  else if (activeSub) { title = activeSub.name; subtitle = activeCategory.name; }
+  else if (activeCategory) { title = activeCategory.name; subtitle = activeCategory.tagline; }
+  else if (bestseller) { title = "Bestsellers"; subtitle = "The Canon — repeat offenders."; }
+  else if (isNew) { title = "New Arrivals"; subtitle = "Chapter three — fresh editions."; }
 
   return (
     <div className="shop-page">
       <div className="shop-header">
         <div className="container">
-          <span className="eyebrow">Radha Imitation Jewellery</span>
-          <h1>{title}</h1>
+          <div className="shop-header-top">
+            <span>Volume 01</span>
+            <em>{subtitle}</em>
+            <span>{loading ? "…" : `${sortedProducts.length} pieces`}</span>
+          </div>
+          <h1 data-testid="shop-title">
+            {title.includes(" ") ? (
+              <>
+                {title.split(" ").slice(0, -1).join(" ")}{" "}
+                <em>{title.split(" ").slice(-1)}</em>
+              </>
+            ) : (
+              title
+            )}
+          </h1>
         </div>
       </div>
 
       <div className="container shop-layout">
-        <aside className="shop-sidebar">
-          <h4>Categories</h4>
-          <ul className="shop-cat-list">
-            <li>
-              <Link to="/shop" className={!categoryId ? "is-active" : ""}>
-                All Products
-              </Link>
-            </li>
-            {categories.map((cat) => (
-              <li key={cat.id}>
-                <Link
-                  to={`/shop/${cat.id}`}
-                  className={categoryId === cat.id && !subcategoryId ? "is-active" : ""}
-                >
-                  {cat.name}
+        <aside className="shop-sidebar" data-testid="shop-sidebar">
+          <div>
+            <h4>Categories</h4>
+            <ul className="shop-cat-list">
+              <li>
+                <Link to="/shop" className={!categoryId ? "is-active" : ""} data-testid="shop-cat-all">
+                  All Pieces
                 </Link>
-                {categoryId === cat.id && (
-                  <ul className="shop-sub-list">
-                    {cat.subcategories.map((sub) => (
-                      <li key={sub.id}>
-                        <Link
-                          to={`/shop/${cat.id}/${sub.id}`}
-                          className={subcategoryId === sub.id ? "is-active" : ""}
-                        >
-                          {sub.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </li>
-            ))}
-          </ul>
+              {categories.map((cat) => (
+                <li key={cat.id}>
+                  <Link
+                    to={`/shop/${cat.id}`}
+                    className={categoryId === cat.id && !subcategoryId ? "is-active" : ""}
+                    data-testid={`shop-cat-${cat.id}`}
+                  >
+                    {cat.name}
+                  </Link>
+                  {categoryId === cat.id && (
+                    <ul className="shop-sub-list">
+                      {cat.subcategories.map((sub) => (
+                        <li key={sub.id}>
+                          <Link
+                            to={`/shop/${cat.id}/${sub.id}`}
+                            className={subcategoryId === sub.id ? "is-active" : ""}
+                            data-testid={`shop-sub-${sub.id}`}
+                          >
+                            {sub.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <h4>Quick Filters</h4>
-          <div className="shop-quick-filters">
-            <button
-              className={bestseller ? "is-active" : ""}
-              onClick={() => setSearchParams(bestseller ? {} : { bestseller: "true" })}
-            >
-              Bestsellers
-            </button>
-            <button
-              className={isNew ? "is-active" : ""}
-              onClick={() => setSearchParams(isNew ? {} : { isNew: "true" })}
-            >
-              New Arrivals
-            </button>
+          <div>
+            <h4>Filters</h4>
+            <div className="shop-quick-filters">
+              <button
+                className={bestseller ? "is-active" : ""}
+                onClick={() => setSearchParams(bestseller ? {} : { bestseller: "true" })}
+                data-testid="shop-filter-bestseller"
+              >
+                Bestsellers
+              </button>
+              <button
+                className={isNew ? "is-active" : ""}
+                onClick={() => setSearchParams(isNew ? {} : { isNew: "true" })}
+                data-testid="shop-filter-new"
+              >
+                New Arrivals
+              </button>
+            </div>
           </div>
         </aside>
 
         <div className="shop-main">
           <div className="shop-toolbar">
-            <span>{loading ? "Loading…" : `${sortedProducts.length} products`}</span>
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              <option value="featured">Sort: Featured</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Top Rated</option>
+            <span>{loading ? "Loading…" : `${sortedProducts.length} pieces`}</span>
+            <select value={sort} onChange={(e) => setSort(e.target.value)} data-testid="shop-sort">
+              <option value="featured">Sort — Featured</option>
+              <option value="price-asc">Price ↑</option>
+              <option value="price-desc">Price ↓</option>
+              <option value="rating">Top rated</option>
             </select>
           </div>
 
           {loading ? (
-            <div className="page-loader">Fetching pieces for you…</div>
+            <div className="page-loader">Fetching the archive…</div>
           ) : sortedProducts.length === 0 ? (
             <div className="shop-empty">
-              <p>No products found. Try a different category or search term.</p>
-              <Link to="/shop" className="btn btn-outline">
-                Reset Filters
+              <p>Nothing found in this shelf yet.</p>
+              <Link to="/shop" className="btn btn-outline" data-testid="shop-reset-filters">
+                <span>Reset filters →</span>
               </Link>
             </div>
           ) : (
-            <div className="product-grid shop-grid">
-              {sortedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
+            <div className="shop-grid" data-testid="shop-grid">
+              {sortedProducts.map((p, idx) => (
+                <ProductCard key={p.id} product={p} index={idx} />
               ))}
             </div>
           )}

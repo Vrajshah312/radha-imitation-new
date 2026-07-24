@@ -1,6 +1,5 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logo from "../../assets/logo.png";
 import "./Admin.css";
 
 const NAV_ITEMS = [
@@ -65,9 +64,9 @@ export default function AdminLayout() {
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <Link to="/admin" className="admin-brand">
-          <img src={logo} alt="Radha Imitation Jewellery" />
-          <span>Admin</span>
+        <Link to="/admin" className="admin-brand" data-testid="admin-brand-link">
+          <span className="admin-brand-mark">Radha<em>.</em></span>
+          <span className="admin-brand-sub">Admin</span>
         </Link>
 
         <nav className="admin-nav">
@@ -85,23 +84,25 @@ export default function AdminLayout() {
         </nav>
 
         <div className="admin-sidebar-footer">
-          <Link to="/" className="admin-view-site">
-            &larr; View Storefront
+          <Link to="/" className="admin-view-site" data-testid="admin-view-site">
+            ← View Storefront
           </Link>
         </div>
       </aside>
 
       <div className="admin-main">
         <header className="admin-topbar">
-          <div />
+          <div>
+            <span className="eyebrow eyebrow-mute">Radha · Admin</span>
+          </div>
           <div className="admin-topbar-user">
             <div className="admin-avatar">{user?.name?.charAt(0).toUpperCase()}</div>
             <div className="admin-topbar-info">
               <strong>{user?.name}</strong>
               <span>{user?.email}</span>
             </div>
-            <button className="btn btn-outline btn-small" onClick={logout}>
-              Sign Out
+            <button className="btn btn-outline btn-small" onClick={logout} data-testid="admin-signout-btn">
+              <span>Sign Out</span>
             </button>
           </div>
         </header>

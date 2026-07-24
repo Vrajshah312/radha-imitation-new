@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logo from "../../assets/logo.png";
 import "./Admin.css";
 
 export default function AdminLogin() {
@@ -35,11 +34,11 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="admin-login">
+    <div className="admin-login" data-testid="admin-login-page">
       <div className="admin-login-card">
-        <img src={logo} alt="Radha Imitation Jewellery" className="admin-login-logo" />
-        <span className="eyebrow">Admin Dashboard</span>
-        <h1>Sign in to manage your store</h1>
+        <div className="admin-login-mark">Radha<em>.</em></div>
+        <span className="eyebrow eyebrow-mute">Admin Dashboard</span>
+        <h1>Sign in to<br />manage the archive.</h1>
 
         {(authError || roleError) && (
           <div className="form-error">{roleError || authError}</div>
@@ -55,6 +54,7 @@ export default function AdminLogin() {
               value={form.email}
               onChange={handleChange}
               placeholder="admin@radhajewellery.com"
+              data-testid="admin-login-email"
             />
           </div>
           <div className="form-field">
@@ -66,15 +66,16 @@ export default function AdminLogin() {
               value={form.password}
               onChange={handleChange}
               placeholder="••••••••"
+              data-testid="admin-login-password"
             />
           </div>
-          <button className="btn btn-primary btn-block" type="submit" disabled={submitting}>
-            {submitting ? "Signing In…" : "Sign In"}
+          <button className="btn btn-block" type="submit" disabled={submitting} data-testid="admin-login-submit">
+            <span>{submitting ? "Signing In…" : "Sign In →"}</span>
           </button>
         </form>
 
         <p className="admin-login-hint">
-          Demo credentials: <strong>admin@radhajewellery.com</strong> /{" "}
+          Demo credentials — <strong>admin@radhajewellery.com</strong> /{" "}
           <strong>Admin@123</strong>
         </p>
       </div>

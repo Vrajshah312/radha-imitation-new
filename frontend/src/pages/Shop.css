@@ -1,151 +1,162 @@
+/* SHOP */
+.shop-page { padding-bottom: 96px; }
+
 .shop-header {
-  background: var(--ivory-deep);
-  padding: 56px 0 40px;
-  text-align: center;
+  padding: 72px 0 48px;
+  border-bottom: 1px solid var(--ink);
+}
+.shop-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  padding-bottom: 32px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.shop-header-top em {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
 }
 .shop-header h1 {
-  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-family: var(--f-display);
+  font-size: clamp(3rem, 8vw, 6.2rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin: 0;
 }
+.shop-header h1 em { font-style: italic; color: var(--ink-mute); font-weight: 400; }
 
 .shop-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 52px;
+  grid-template-columns: 240px 1fr;
+  gap: 56px;
   padding-top: 48px;
-  padding-bottom: 96px;
   align-items: start;
+}
+@media (max-width: 960px) {
+  .shop-layout { grid-template-columns: 1fr; gap: 32px; }
 }
 
 .shop-sidebar {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 26px 24px;
+  position: sticky;
+  top: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
 }
-
 .shop-sidebar h4 {
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
+  font-family: var(--f-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+  margin: 0 0 16px;
+}
+.shop-cat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.shop-cat-list > li > a,
+.shop-sub-list a {
+  display: block;
+  padding: 6px 0;
   color: var(--ink-soft);
-  margin: 28px 0 14px;
+  font-family: var(--f-sans);
+  font-size: 0.92rem;
+  transition: color 0.25s ease, padding-left 0.25s ease;
 }
-.shop-sidebar h4:first-child {
-  margin-top: 0;
-}
-
-.shop-cat-list,
+.shop-cat-list > li > a.is-active { color: var(--ink); font-weight: 500; }
+.shop-cat-list > li > a:hover { color: var(--ink); padding-left: 6px; }
 .shop-sub-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  margin: 4px 0 12px 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-.shop-cat-list > li {
-  margin-bottom: 2px;
-}
-.shop-cat-list a {
-  display: block;
-  padding: 10px 12px;
-  margin: 0 -12px;
-  border-radius: 6px;
-  font-size: 0.92rem;
-  color: var(--ink);
-  border-bottom: 1px solid var(--line);
-  transition: color 0.25s ease, background 0.25s ease;
-}
-.shop-cat-list a:hover,
-.shop-cat-list a.is-active {
-  color: var(--maroon);
-  background: var(--ivory-deep);
-}
-.shop-sub-list {
-  padding-left: 14px;
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
-.shop-sub-list a {
-  font-size: 0.84rem;
-  border-bottom: none;
-  padding: 8px 12px;
-  color: var(--ink-soft);
-}
-.shop-sub-list a.is-active,
-.shop-sub-list a:hover {
-  color: var(--maroon);
-  background: var(--ivory-deep);
-}
+.shop-sub-list a { font-size: 0.85rem; }
+.shop-sub-list a.is-active { color: var(--ink); font-weight: 500; }
 
 .shop-quick-filters {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .shop-quick-filters button {
+  padding: 10px 14px;
+  border: 1px solid var(--rule-soft);
+  background: transparent;
+  font-family: var(--f-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
   text-align: left;
-  background: none;
-  border: 1px solid var(--line);
-  padding: 11px 14px;
-  font-size: 0.82rem;
-  border-radius: 8px;
-  transition: all 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 .shop-quick-filters button.is-active,
 .shop-quick-filters button:hover {
-  border-color: var(--gold);
-  background: var(--ivory-deep);
-  color: var(--maroon);
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
 }
 
 .shop-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding: 16px 22px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  align-items: baseline;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
 }
 .shop-toolbar select {
-  padding: 10px 16px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  font-family: var(--font-label);
-  font-size: 0.82rem;
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  padding: 10px 14px;
+  font-family: var(--f-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--ink);
-  transition: border-color 0.25s ease;
-}
-.shop-toolbar select:focus {
+  border-radius: 0;
+  cursor: pointer;
   outline: none;
-  border-color: var(--gold);
-}
-
-.shop-grid {
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .shop-empty {
+  padding: 96px 32px;
   text-align: center;
-  padding: 60px 0;
+  border: 1px solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   color: var(--ink-soft);
 }
 
-@media (max-width: 980px) {
-  .shop-layout {
-    grid-template-columns: 1fr;
-  }
-  .shop-sidebar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 28px;
 }
-@media (max-width: 700px) {
-  .shop-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+@media (max-width: 900px) {
+  .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
 }

@@ -20,12 +20,10 @@ export default function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     setLocalError("");
-
     if (form.password !== form.confirm) {
       setLocalError("Passwords do not match");
       return;
     }
-
     setSubmitting(true);
     const ok = await register(form);
     setSubmitting(false);
@@ -33,20 +31,26 @@ export default function Register() {
   }
 
   return (
-    <div className="auth-page">
+    <div className="auth-page" data-testid="register-page">
       <div className="auth-visual">
-        <div className="gold-ring auth-ring" />
+        <div className="auth-corner-tag">
+          <span>RJ / New Member</span>
+          <em>— Volume One</em>
+        </div>
         <div className="auth-visual-copy">
-          <span className="eyebrow">Join Us</span>
-          <h2>Your jewellery box, reimagined</h2>
-          <p>Create an account for faster checkout and order tracking.</p>
+          <span className="eyebrow">Join the archive</span>
+          <h2>Your jewellery box,<br /><em>reimagined.</em></h2>
+          <p>
+            Create an account for faster checkout, order tracking and
+            occasional field notes from the studio.
+          </p>
         </div>
       </div>
 
       <div className="auth-form-wrap">
         <div className="auth-form-inner">
-          <span className="eyebrow">Create Account</span>
-          <h1>Sign Up</h1>
+          <span className="eyebrow eyebrow-mute">Sign Up · 02 / 02</span>
+          <h1>Create <em>account.</em></h1>
 
           {(localError || authError) && (
             <div className="form-error">{localError || authError}</div>
@@ -62,6 +66,7 @@ export default function Register() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your name"
+                data-testid="register-name"
               />
             </div>
             <div className="form-field">
@@ -73,6 +78,7 @@ export default function Register() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
+                data-testid="register-email"
               />
             </div>
             <div className="form-field">
@@ -85,6 +91,7 @@ export default function Register() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="At least 6 characters"
+                data-testid="register-password"
               />
             </div>
             <div className="form-field">
@@ -97,16 +104,17 @@ export default function Register() {
                 value={form.confirm}
                 onChange={handleChange}
                 placeholder="Re-enter your password"
+                data-testid="register-confirm"
               />
             </div>
-            <button className="btn btn-primary btn-block" type="submit" disabled={submitting}>
-              {submitting ? "Creating Account…" : "Create Account"}
+            <button className="btn btn-block" type="submit" disabled={submitting} data-testid="register-submit">
+              <span>{submitting ? "Creating account…" : "Create Account →"}</span>
             </button>
           </form>
 
           <p className="auth-switch">
             Already have an account?{" "}
-            <Link to="/login" onClick={() => setAuthError("")}>
+            <Link to="/login" onClick={() => setAuthError("")} data-testid="register-login-link">
               Sign in
             </Link>
           </p>

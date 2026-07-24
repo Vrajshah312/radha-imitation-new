@@ -1,31 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import logo from "../assets/logo.png";
+import { useEffect, useState } from "react";
 import "./EntryExperience.css";
 
 const SESSION_KEY = "radha_entered";
-const SPLASH_DURATION = 2000;
+const SPLASH_DURATION = 2100;
 const EXIT_DURATION = 750;
-
-function useSparkles(count) {
-  return useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: 2 + Math.random() * 3,
-        delay: `${Math.random() * 4}s`,
-        duration: `${3 + Math.random() * 3}s`,
-      })),
-    [count]
-  );
-}
 
 export default function EntryExperience({ children }) {
   const [phase, setPhase] = useState(() =>
     typeof window !== "undefined" && sessionStorage.getItem(SESSION_KEY) ? "done" : "splash"
   );
-  const sparkles = useSparkles(20);
 
   useEffect(() => {
     if (phase !== "splash") return;
@@ -35,9 +18,7 @@ export default function EntryExperience({ children }) {
 
   useEffect(() => {
     document.body.style.overflow = phase === "done" ? "" : "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [phase]);
 
   function handleEnter() {
@@ -53,48 +34,43 @@ export default function EntryExperience({ children }) {
       {children}
 
       {phase !== "done" && (
-        <div className={`entry-overlay ${phase === "exiting" ? "is-exiting" : ""}`}>
-          <div className="entry-sparkles" aria-hidden="true">
-            {sparkles.map((s) => (
-              <span
-                key={s.id}
-                style={{
-                  top: s.top,
-                  left: s.left,
-                  width: s.size,
-                  height: s.size,
-                  animationDelay: s.delay,
-                  animationDuration: s.duration,
-                }}
-              />
-            ))}
-          </div>
+        <div className={`entry-overlay ${phase === "exiting" ? "is-exiting" : ""}`} data-testid="entry-overlay">
+          <span className="entry-corner-tag entry-corner-tl">RJ / EST. 2019</span>
+          <span className="entry-corner-tag entry-corner-tr">— an archive.</span>
+          <span className="entry-corner-tag entry-corner-bl">Chapter 01 · Loading</span>
+          <span className="entry-corner-tag entry-corner-br">₹ INR · India</span>
 
           {phase === "splash" && (
             <div className="entry-splash">
-              <div className="entry-splash-ring gold-ring" />
-              <img src={logo} alt="Radha Imitation Jewellery" className="entry-splash-logo" />
-              <div className="entry-splash-label">
-                <span>Loading the Collection</span>
-                <span className="entry-dots">
-                  <i />
-                  <i />
-                  <i />
+              <div className="entry-splash-marque" aria-label="Radha">
+                {["R","A","D","H","A"].map((c, i) => (
+                  <span
+                    className="letter"
+                    key={i}
+                    style={{ animationDelay: `${0.15 + i * 0.08}s` }}
+                  >
+                    {c}
+                  </span>
+                ))}
+                <span className="letter" style={{ animationDelay: `${0.15 + 5 * 0.08}s` }}>
+                  <em>.</em>
                 </span>
               </div>
+              <div className="entry-splash-label">Loading the archive</div>
+              <div className="entry-progress" />
             </div>
           )}
 
           {(phase === "gate" || phase === "exiting") && (
             <div className="entry-gate">
-              <div className="entry-gate-ring entry-gate-ring-1" />
-              <div className="entry-gate-ring entry-gate-ring-2" />
-              <img src={logo} alt="Radha Imitation Jewellery" className="entry-gate-logo" />
-              <span className="eyebrow">Welcome To</span>
-              <h1>Radha Imitation Jewellery</h1>
-              <p>Kundan, temple &amp; meenakari pieces — handpicked for every celebration.</p>
-              <button className="btn btn-primary entry-gate-btn" onClick={handleEnter}>
-                Enter the Store
+              <span className="eyebrow">Welcome to Volume One</span>
+              <h1>Objects of<br /><em>Devotion.</em></h1>
+              <p>
+                An editorial archive of imitation heirlooms — kundan, temple &amp;
+                meenakari, engineered to be worn, not locked away.
+              </p>
+              <button className="btn entry-gate-btn" onClick={handleEnter} data-testid="entry-gate-btn">
+                <span>Enter The Archive →</span>
               </button>
             </div>
           )}
