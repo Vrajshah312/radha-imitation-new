@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 import "./Footer.css";
 
 export default function Footer() {
@@ -6,7 +7,7 @@ export default function Footer() {
     <footer className="site-footer" data-testid="site-footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <span className="footer-brand-mark">Radha<em>.</em></span>
+          <img src={logo} alt="Radha Imitation Jewellery" className="footer-brand-logo" />
           <p>
             Handcrafted imitation jewellery — kundan, temple, meenakari and
             everyday pieces made to be worn and loved.

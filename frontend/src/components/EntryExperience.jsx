@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 import "./EntryExperience.css";
 
 const SESSION_KEY = "radha_entered";
-const TOTAL = 1700;
+const TOTAL = 2000;
 const FADE = 500;
 
 export default function EntryExperience({ children }) {
@@ -31,8 +32,7 @@ export default function EntryExperience({ children }) {
       {phase !== "done" && (
         <div className={`entry-overlay ${phase === "exiting" ? "is-exiting" : ""}`} data-testid="entry-overlay">
           <div className="entry-splash">
-            <div className="entry-brand">Radha<em>.</em></div>
-            <div className="entry-tagline">Imitation Jewellery</div>
+            <img src={logo} alt="Radha Imitation Jewellery" className="entry-splash-logo" />
             <div className="entry-progress" />
           </div>
         </div>

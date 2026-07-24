@@ -1,5 +1,6 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 import "./Admin.css";
 
 const NAV_ITEMS = [
@@ -65,7 +66,7 @@ export default function AdminLayout() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <Link to="/admin" className="admin-brand" data-testid="admin-brand-link">
-          <span className="admin-brand-mark">Radha<em>.</em></span>
+          <img src={logo} alt="Radha Imitation Jewellery" className="admin-brand-logo" />
           <span className="admin-brand-sub">Admin</span>
         </Link>
 

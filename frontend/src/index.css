@@ -28,7 +28,7 @@
   /* structure */
   --gutter: 28px;
   --container: 1280px;
-  --nav-h: 68px;
+  --nav-h: 80px;
 }
 
 * { box-sizing: border-box; }

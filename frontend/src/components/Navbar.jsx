@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import api from "../services/api";
+import logo from "../assets/logo.png";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -116,7 +117,7 @@ export default function Navbar() {
         </nav>
 
         <Link to="/" className="nav-brand" data-testid="nav-brand-link">
-          <span className="nav-brand-mark">Radha<em>.</em></span>
+          <img src={logo} alt="Radha Imitation Jewellery" className="nav-brand-logo" />
         </Link>
 
         <button

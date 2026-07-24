@@ -18,6 +18,14 @@
   .footer-grid { grid-template-columns: 1fr; }
 }
 
+.footer-brand-logo {
+  height: 80px;
+  width: auto;
+  display: block;
+  margin-bottom: 20px;
+  filter: brightness(1.08) drop-shadow(0 2px 8px rgba(200, 163, 90, 0.15));
+}
+
 .footer-brand-mark {
   font-family: var(--f-display);
   font-size: 1.9rem;
