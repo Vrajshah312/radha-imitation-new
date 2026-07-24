@@ -1,0 +1,7 @@
+.breadcrumbs { background: var(--ivory-deep); border-bottom: 1px solid var(--line); }
+.breadcrumbs-inner { display: flex; align-items: center; min-height: 44px; overflow-x: auto; white-space: nowrap; }
+.breadcrumb-item { display: inline-flex; align-items: center; font-family: var(--font-label); font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); }
+.breadcrumb-item a { color: var(--ink-soft); transition: color .2s ease; }
+.breadcrumb-item a:hover { color: var(--maroon); }
+.breadcrumb-item [aria-current="page"] { color: var(--maroon); }
+.breadcrumb-separator { color: var(--gold-deep); margin: 0 10px; font-size: .9rem; }

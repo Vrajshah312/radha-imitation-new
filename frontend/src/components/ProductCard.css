@@ -1,0 +1,97 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--ivory-deep);
+  border-radius: var(--radius);
+}
+.product-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.35) 50%, transparent 60%);
+  transform: translateX(-120%);
+  pointer-events: none;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product-media:hover::before {
+  transform: translateX(120%);
+}
+.product-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+}
+.product-media-hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.product-media.has-hover-image:hover .product-media-hover {
+  opacity: 1;
+}
+.product-media:hover img:first-child {
+  transform: scale(1.045);
+}
+.product-media.has-hover-image:hover img:first-child {
+  transform: scale(1.025);
+}
+.product-media.has-hover-image:hover .product-media-hover {
+  transform: scale(1.045);
+}
+
+.product-badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+}
+
+.product-quickadd {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -46px;
+  background: var(--ink);
+  color: var(--gold-pale);
+  border: none;
+  padding: 12px;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  transition: bottom 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+  z-index: 2;
+}
+.product-media:hover .product-quickadd {
+  bottom: 10px;
+}
+.product-quickadd:hover {
+  background: var(--maroon);
+}
+
+.product-info {
+  padding-top: 14px;
+}
+.product-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+  transition: color 0.25s ease;
+}
+.product-name:hover {
+  color: var(--maroon);
+}

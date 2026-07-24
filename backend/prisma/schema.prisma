@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  role         UserRole   @default(CUSTOMER)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  orders       Order[]
+
+  @@map("users")
+}
+
+model Category {
+  id            String        @id
+  name          String
+  tagline       String        @default("")
+  subcategories Subcategory[]
+  products      Product[]
+
+  @@map("categories")
+}
+
+model Subcategory {
+  id         String    @id
+  name       String
+  categoryId String    @map("category_id")
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products   Product[]
+
+  @@unique([id, categoryId])
+  @@map("subcategories")
+}
+
+model Product {
+  id            String         @id
+  name          String
+  categoryId    String         @map("category_id")
+  subcategoryId String         @map("subcategory_id")
+  price         Decimal        @db.Decimal(10, 2)
+  mrp           Decimal        @db.Decimal(10, 2)
+  rating        Decimal        @default(0) @db.Decimal(2, 1)
+  reviews       Int            @default(0)
+  stock         Int            @default(0)
+  material      String         @default("")
+  colors        String[]       @default([])
+  isNew         Boolean        @default(false) @map("is_new")
+  isBestseller  Boolean        @default(false) @map("is_bestseller")
+  description   String         @default("")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  category      Category       @relation(fields: [categoryId], references: [id])
+  subcategory   Subcategory    @relation(fields: [subcategoryId, categoryId], references: [id, categoryId])
+  images        ProductImage[]
+  orderItems    OrderItem[]
+
+  @@index([categoryId, subcategoryId])
+  @@map("products")
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  position  Int     @default(0)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, position])
+  @@map("product_images")
+}
+
+model Order {
+  id              String      @id
+  userId          Int         @map("user_id")
+  customerName    String      @map("customer_name")
+  customerEmail   String      @map("customer_email")
+  shippingAddress Json        @map("shipping_address")
+  subtotal        Decimal     @db.Decimal(10, 2)
+  shipping        Decimal     @db.Decimal(10, 2)
+  total           Decimal     @db.Decimal(10, 2)
+  status          OrderStatus @default(PENDING)
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime?   @updatedAt @map("updated_at")
+  user            User        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   String  @map("order_id")
+  productId String  @map("product_id")
+  name      String
+  price     Decimal @db.Decimal(10, 2)
+  qty       Int
+  image     String?
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Banner {
+  id          String   @id
+  eyebrow     String
+  title       String
+  accent      String   @default("")
+  description String   @default("")
+  buttonLabel String   @map("button_label")
+  buttonLink  String   @map("button_link")
+  image       String
+  active      Boolean  @default(true)
+  order       Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([active, order])
+  @@map("banners")
+}
