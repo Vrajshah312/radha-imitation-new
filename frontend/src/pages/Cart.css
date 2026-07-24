@@ -1,6 +1,6 @@
 /* CART */
-.cart-page { padding: 48px 0 96px; }
-.cart-empty {
+.cart-page { padding: 56px 0 96px; }
+.cart-empty.container {
   padding: 120px 20px;
   text-align: center;
   display: flex;

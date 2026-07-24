@@ -1,5 +1,5 @@
 /* CHECKOUT */
-.checkout-page { padding: 48px 0 96px; }
+.checkout-page.container { padding-top: 56px; padding-bottom: 96px; }
 .checkout-heading {
   padding-bottom: 20px;
   margin-bottom: 32px;
@@ -88,7 +88,7 @@
   font-size: 0.88rem;
 }
 
-.checkout-success {
+.checkout-success.container {
   padding: 120px 20px;
   text-align: center;
   display: flex;
