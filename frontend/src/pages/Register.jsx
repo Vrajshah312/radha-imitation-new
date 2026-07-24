@@ -33,24 +33,20 @@ export default function Register() {
   return (
     <div className="auth-page" data-testid="register-page">
       <div className="auth-visual">
-        <div className="auth-corner-tag">
-          <span>RJ / New Member</span>
-          <em>— Volume One</em>
-        </div>
         <div className="auth-visual-copy">
-          <span className="eyebrow">Join the archive</span>
-          <h2>Your jewellery box,<br /><em>reimagined.</em></h2>
+          <span className="eyebrow">Join Radha</span>
+          <h2>Your jewellery box, <em>reimagined.</em></h2>
           <p>
             Create an account for faster checkout, order tracking and
-            occasional field notes from the studio.
+            early access to new drops.
           </p>
         </div>
       </div>
 
       <div className="auth-form-wrap">
         <div className="auth-form-inner">
-          <span className="eyebrow eyebrow-mute">Sign Up · 02 / 02</span>
-          <h1>Create <em>account.</em></h1>
+          <span className="eyebrow">Create Account</span>
+          <h1>Sign <em>up.</em></h1>
 
           {(localError || authError) && (
             <div className="form-error">{localError || authError}</div>
@@ -108,7 +104,7 @@ export default function Register() {
               />
             </div>
             <button className="btn btn-block" type="submit" disabled={submitting} data-testid="register-submit">
-              <span>{submitting ? "Creating account…" : "Create Account →"}</span>
+              {submitting ? "Creating account…" : "Create Account"}
             </button>
           </form>
 

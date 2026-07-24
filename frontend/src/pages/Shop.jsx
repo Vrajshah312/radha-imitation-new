@@ -45,25 +45,21 @@ export default function Shop() {
   const activeCategory = categories.find((c) => c.id === categoryId);
   const activeSub = activeCategory?.subcategories.find((s) => s.id === subcategoryId);
 
-  let title = "The Archive";
-  let subtitle = "Every piece we make.";
-  if (search) { title = `“${search}”`; subtitle = "Search results"; }
-  else if (activeSub) { title = activeSub.name; subtitle = activeCategory.name; }
-  else if (activeCategory) { title = activeCategory.name; subtitle = activeCategory.tagline; }
-  else if (bestseller) { title = "Bestsellers"; subtitle = "The Canon — repeat offenders."; }
-  else if (isNew) { title = "New Arrivals"; subtitle = "Chapter three — fresh editions."; }
+  let title = "Shop All";
+  let eyebrow = "The Collection";
+  if (search) { title = `“${search}”`; eyebrow = "Search results"; }
+  else if (activeSub) { title = activeSub.name; eyebrow = activeCategory.name; }
+  else if (activeCategory) { title = activeCategory.name; eyebrow = "Category"; }
+  else if (bestseller) { title = "Bestsellers"; eyebrow = "Loved by many"; }
+  else if (isNew) { title = "New Arrivals"; eyebrow = "Fresh in"; }
 
   return (
     <div className="shop-page">
       <div className="shop-header">
         <div className="container">
-          <div className="shop-header-top">
-            <span>Volume 01</span>
-            <em>{subtitle}</em>
-            <span>{loading ? "…" : `${sortedProducts.length} pieces`}</span>
-          </div>
+          <span className="eyebrow">{eyebrow}</span>
           <h1 data-testid="shop-title">
-            {title.includes(" ") ? (
+            {title.split(" ").length > 1 ? (
               <>
                 {title.split(" ").slice(0, -1).join(" ")}{" "}
                 <em>{title.split(" ").slice(-1)}</em>
@@ -82,7 +78,7 @@ export default function Shop() {
             <ul className="shop-cat-list">
               <li>
                 <Link to="/shop" className={!categoryId ? "is-active" : ""} data-testid="shop-cat-all">
-                  All Pieces
+                  All Products
                 </Link>
               </li>
               {categories.map((cat) => (
@@ -115,7 +111,7 @@ export default function Shop() {
           </div>
 
           <div>
-            <h4>Filters</h4>
+            <h4>Quick Filters</h4>
             <div className="shop-quick-filters">
               <button
                 className={bestseller ? "is-active" : ""}
@@ -137,28 +133,28 @@ export default function Shop() {
 
         <div className="shop-main">
           <div className="shop-toolbar">
-            <span>{loading ? "Loading…" : `${sortedProducts.length} pieces`}</span>
+            <span>{loading ? "Loading…" : `${sortedProducts.length} products`}</span>
             <select value={sort} onChange={(e) => setSort(e.target.value)} data-testid="shop-sort">
-              <option value="featured">Sort — Featured</option>
-              <option value="price-asc">Price ↑</option>
-              <option value="price-desc">Price ↓</option>
-              <option value="rating">Top rated</option>
+              <option value="featured">Sort: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
             </select>
           </div>
 
           {loading ? (
-            <div className="page-loader">Fetching the archive…</div>
+            <div className="page-loader">Loading products…</div>
           ) : sortedProducts.length === 0 ? (
             <div className="shop-empty">
-              <p>Nothing found in this shelf yet.</p>
+              <p>No products found.</p>
               <Link to="/shop" className="btn btn-outline" data-testid="shop-reset-filters">
-                <span>Reset filters →</span>
+                Reset Filters
               </Link>
             </div>
           ) : (
             <div className="shop-grid" data-testid="shop-grid">
-              {sortedProducts.map((p, idx) => (
-                <ProductCard key={p.id} product={p} index={idx} />
+              {sortedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
           )}

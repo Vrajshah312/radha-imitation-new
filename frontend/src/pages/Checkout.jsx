@@ -50,14 +50,14 @@ export default function Checkout() {
     return (
       <div className="checkout-success container" data-testid="checkout-success">
         <div className="checkout-success-tick">✓</div>
-        <span className="eyebrow eyebrow-mute">Order Confirmed</span>
+        <span className="eyebrow">Order Confirmed</span>
         <h1>Thank you, <em>{form.fullName.split(" ")[0] || "friend"}.</em></h1>
         <p>
-          Your order has been logged in the archive. This is a demo — no live
-          payment was processed. A confirmation would normally be sent to your email.
+          Your order has been placed. This is a demo — no live payment was
+          processed. A confirmation would normally be sent to your email.
         </p>
         <button className="btn" onClick={() => navigate("/shop")} data-testid="checkout-success-continue">
-          <span>Continue Shopping →</span>
+          Continue Shopping
         </button>
       </div>
     );
@@ -69,7 +69,7 @@ export default function Checkout() {
         <h1>Your bag is <em>empty.</em></h1>
         <p>Add a few pieces to your bag before checking out.</p>
         <button className="btn" onClick={() => navigate("/shop")}>
-          <span>Shop Now →</span>
+          Shop Now
         </button>
       </div>
     );
@@ -78,7 +78,7 @@ export default function Checkout() {
   return (
     <div className="checkout-page container">
       <div className="checkout-heading">
-        <span className="eyebrow eyebrow-mute">Almost There · Step 03</span>
+        <span className="eyebrow">Almost there</span>
         <h1>Check<em>out.</em></h1>
       </div>
 
@@ -116,18 +116,17 @@ export default function Checkout() {
 
           <h3>Payment</h3>
           <div className="payment-note">
-            This is a demo storefront — no live payment gateway is connected.
-            Placing an order simply confirms the checkout flow end-to-end.
+            This is a demo store — no real payment gateway is connected. Placing
+            an order simply confirms the flow end-to-end.
           </div>
           {error && <div className="form-error">{error}</div>}
 
           <button className="btn btn-block" type="submit" disabled={submitting} data-testid="checkout-place-order">
-            <span>{submitting ? "Placing Order…" : `Place Order — ₹${grandTotal.toLocaleString("en-IN")} →`}</span>
+            {submitting ? "Placing Order…" : `Place Order — ₹${grandTotal.toLocaleString("en-IN")}`}
           </button>
         </form>
 
         <div className="checkout-summary">
-          <span className="eyebrow eyebrow-mute">Ledger</span>
           <h3>Order Summary</h3>
           {items.map((item) => (
             <div className="checkout-line" key={item.id}>
@@ -137,9 +136,9 @@ export default function Checkout() {
               <span>₹{(item.price * item.qty).toLocaleString("en-IN")}</span>
             </div>
           ))}
-          <div className="summary-row" style={{ marginTop: 12 }}>
+          <div className="summary-row" style={{ marginTop: 10 }}>
             <span>Shipping</span>
-            <span>{shipping === 0 ? "Complimentary" : `₹${shipping}`}</span>
+            <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
           </div>
           <div className="summary-row summary-total">
             <span>Total</span>

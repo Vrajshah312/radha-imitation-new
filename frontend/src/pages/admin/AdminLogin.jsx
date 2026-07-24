@@ -38,7 +38,7 @@ export default function AdminLogin() {
       <div className="admin-login-card">
         <div className="admin-login-mark">Radha<em>.</em></div>
         <span className="eyebrow eyebrow-mute">Admin Dashboard</span>
-        <h1>Sign in to<br />manage the archive.</h1>
+        <h1>Sign in to manage your store.</h1>
 
         {(authError || roleError) && (
           <div className="form-error">{roleError || authError}</div>
@@ -70,7 +70,7 @@ export default function AdminLogin() {
             />
           </div>
           <button className="btn btn-block" type="submit" disabled={submitting} data-testid="admin-login-submit">
-            <span>{submitting ? "Signing In…" : "Sign In →"}</span>
+            {submitting ? "Signing In…" : "Sign In"}
           </button>
         </form>
 

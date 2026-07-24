@@ -3,61 +3,61 @@
 ## Original Problem Statement
 > "I want to re-design my current repo web app please look at that and re-design whole app please"
 
-Follow-up user directive: **do not touch the PostgreSQL + Prisma backend** — only update the design.
+Follow-ups:
+- User: keep the PostgreSQL + Prisma + Node/Express backend untouched
+- User: "do not add big big text and all of that make it simple but attractive please"
 
 ## User Choices (verbatim)
-- Design direction: *Surprise me — you pick the most distinctive direction*
-- Scope: *Everything* (storefront + admin dashboard)
+- Design direction: *Surprise me*
+- Scope: *Everything*
 - Keep existing functionality intact
-- Product photography: *Use curated jewellery-themed stock images (Unsplash)*
-- Motion level: *Rich (scroll reveals, parallax, entry animations, micro-interactions)*
+- Product photography: *Unsplash-curated*
+- Motion level: *Rich (scroll reveals, entry animations, micro-interactions)*
+- Refined pass: *simple but attractive — no big big text*
 
-## Stack (unchanged by this session)
-- **Frontend**: React 18 + Vite + React Router 6 (untouched core; UI redesigned in-place)
+## Stack (unchanged)
+- **Frontend**: React 18 + Vite + React Router 6 (redesigned UI, same architecture)
 - **Backend**: Node/Express + Prisma + PostgreSQL (untouched — user-managed)
-- **New dependency**: `framer-motion` added for future rich animations
+- `framer-motion` installed but not yet leveraged
 
-## Design System — "Neo-Heritage Archive"
-Full brutalist-museum editorial redesign based on `/app/design_guidelines.json`.
+## Design System — "Refined Minimal"
+Reset from the earlier brutalist-editorial pass to a warm, product-forward minimal system.
 
-- **Typography**: Bodoni Moda (display, italics) + General Sans (body/UI)
-- **Palette**: Monochrome canvas — Paper `#f4f2ea`, Ink `#0a0b0a`, Kemp `#7a1420` (signal)
-- **Motifs**: 1px razor rules, no shadows, chapter-indexed sections (01/02/03), editorial serial numbers on every product ("RJ / № 001"), subtle SVG grain overlay, marquee ticker
-- **Motion**: Splash marque with per-letter rise, editorial hero parallax, product hover swap + slide-up "Add to Bag", link swipe underlines, staggered scroll reveals
+- **Typography**: Fraunces (display, italic accents) + Inter Tight (body/UI). Heading sizes capped ~2.6rem.
+- **Palette**: Warm ivory `#f8f5ee`, ink `#1c1a17`, gold `#a3803a` (accent), soft alt `#efeadd`.
+- **Motifs**: Pill-shaped buttons, 12px rounded card corners, gold italic accent per section title (e.g. "Find your *piece*"), subtle hover reveals on product cards, soft dividers.
+- **Motion**: Splash logo with animated gold progress line, hero image slow-zoom on load, image swap on card hover, "+ Add to Bag" slide-up, staggered reveals on scroll, link-arrow gap-grow on hover.
 
 ## What's Been Implemented (2026-01)
-- New global design tokens & typography (`src/index.css`, `index.html`)
-- Redesigned **Navbar** — center brand mark, mega-menu with dark feature column, glass topbar
-- Redesigned **Footer** — massive manifesto headline + link columns + newsletter
-- Redesigned **EntryExperience** — animated splash with rising Bodoni letters + editorial gate
-- Redesigned **ProductCard** — image swap on hover, RJ index numbering, sharp quick-add
-- Redesigned pages: **Home** (editorial hero + ticker + tetris grids + values band + story), **Shop** (chapter title + sidebar filters), **ProductDetail** (2-col sticky gallery), **Cart** (ledger summary), **Checkout** (grand sticky ledger), **Login/Register** (split editorial), **Profile** (brutalist cards), **NotFound**
-- Redesigned **Admin** — dark sidebar, dense high-contrast tables, sharp KPI grid, brutalist modals & bar chart
-- API contracts untouched — frontend still calls `VITE_API_BASE_URL` (defaults to `http://localhost:5000/api`)
-- `data-testid` attributes added throughout for every interactive/critical element
+- **v1 (Neo-Heritage Archive)** — dramatic editorial (rolled back per user)
+- **v2 (Refined Minimal)** — current:
+  - Simplified `index.css` — warmer palette, Fraunces + Inter Tight, capped heading sizes, pill buttons, 12px card radii
+  - `Navbar` — glass topbar, center wordmark "Radha.", simple Home / Shop / Bestsellers labels, refined mega-menu
+  - `Footer` — normal footer with brand mark, columns, gold subscribe pill (no giant manifesto)
+  - `EntryExperience` — clean 1.7s splash with just the wordmark + animated gold progress line
+  - `Home` — hero split with soft stats row, section headers with italic gold accents, gentle category cards with hover zoom, product grids, values band inside cream card, story block
+  - `Shop`, `ProductDetail`, `Cart`, `Checkout`, `Login`, `Register`, `Profile`, `NotFound` — all resized to sensible heading sizes with consistent tone
+  - `Admin` — kept dark sidebar + dense tables but softened all headings, rounded modal, gentler numbers in KPI cards
+- API contracts untouched; frontend still points at `VITE_API_BASE_URL` (defaults to `http://localhost:5000/api`)
+- Every interactive element has a `data-testid`
+- `yarn build` passes cleanly (~51 kB gzip CSS + 91 kB gzip JS)
 
 ## Not Touched (as requested)
 - All of `/app/backend/**` — Node/Express, Prisma schema, routes, controllers, models
 - API endpoints, auth flow, order flow, admin CRUD contracts
 - `.env.example` files, ports, deploy config
 
-## Files Changed
-- `frontend/index.html` (fonts)
-- `frontend/src/index.css` (design system)
-- `frontend/src/components/{Navbar,Footer,ProductCard,EntryExperience,Breadcrumbs}.{jsx,css}`
+## Files Changed (v2)
+- `frontend/index.html` (fonts → Fraunces + Inter Tight)
+- `frontend/src/index.css` (design system reset)
+- `frontend/src/components/{Navbar,Footer,ProductCard,EntryExperience}.{jsx,css}`
 - `frontend/src/pages/{Home,Shop,ProductDetail,Cart,Checkout,Login,Register,Profile,NotFound}.{jsx,css}`
 - `frontend/src/pages/admin/{AdminLayout,AdminLogin,Admin.css}`
 
 ## Verified
-- `yarn build` — passes, 60 kB gzipped CSS + 92 kB gzipped JS
-- Screenshots captured for Home, Shop, Cart, Login, Admin Login — all render correctly
-
-## Notes
-- Backend must be started separately by the user (per instruction) — frontend expects it on `http://localhost:5000/api`
-- Product images use Unsplash URLs seeded via backend/frontend; frontend gracefully renders when API is offline
-- No `data-testid` regressions; every button, form input, nav element carries one for QA
+- Vite dev server + screenshots — Home, Shop, Cart, Login all render correctly at refined sizes
+- `yarn build` — passes
 
 ## Next Action Items
-- User to run their own PG/Prisma backend + `yarn dev` in `frontend/`
-- Optional: hook up framer-motion for further scroll-linked parallax if desired
-- Optional: replace fallback banner + category imagery with brand photography
+- Start backend (`cd backend && npm run dev`) + frontend (`cd frontend && npm run dev`) to browse with real products
+- If any block feels off with real content loaded, share a screenshot and I'll tune

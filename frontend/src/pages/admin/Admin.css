@@ -167,11 +167,11 @@
 }
 .admin-page-head h1 {
   font-family: var(--f-display);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin: 8px 0 0;
+  font-size: clamp(1.6rem, 2.6vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  margin: 6px 0 0;
 }
 .admin-page-actions {
   display: flex;
@@ -219,10 +219,10 @@
 }
 .admin-stat-value {
   font-family: var(--f-display);
-  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 500;
   color: var(--ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.005em;
   line-height: 1;
 }
 .admin-stat-sub {
@@ -463,11 +463,11 @@
 }
 .admin-modal h2 {
   font-family: var(--f-display);
-  font-size: 1.9rem;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  margin: 0 0 24px;
-  padding-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin: 0 0 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--rule-soft);
 }
 .admin-modal-row {
@@ -524,12 +524,13 @@
 .admin-login-mark em { font-style: italic; color: var(--ink-mute); font-weight: 400; }
 .admin-login-card h1 {
   font-family: var(--f-display);
-  font-size: 1.9rem;
-  letter-spacing: -0.01em;
-  font-weight: 400;
-  margin: 12px 0 28px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--ink);
+  font-size: 1.6rem;
+  letter-spacing: -0.005em;
+  font-weight: 500;
+  margin: 10px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule-soft);
+  line-height: 1.2;
 }
 .admin-login-hint {
   margin-top: 24px;

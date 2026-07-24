@@ -18,11 +18,11 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="cart-empty container" data-testid="cart-empty">
-        <span className="eyebrow eyebrow-mute">The Bag</span>
-        <h1>Nothing on the <em>counter.</em></h1>
-        <p>Wander through the archive and add a few pieces you love.</p>
+        <span className="eyebrow">Your Bag</span>
+        <h1>Your bag is <em>empty.</em></h1>
+        <p>Browse the collection and add a few pieces you love.</p>
         <Link to="/shop" className="btn" data-testid="cart-empty-cta">
-          <span>Enter The Archive →</span>
+          Start Shopping
         </Link>
       </div>
     );
@@ -33,13 +33,13 @@ export default function Cart() {
       <div className="container">
         <div className="cart-heading">
           <div>
-            <span className="eyebrow eyebrow-mute">The Bag · Volume 01</span>
+            <span className="eyebrow">Your Bag</span>
             <h1 data-testid="cart-heading">
-              {totalItems} <em>{totalItems === 1 ? "piece" : "pieces"}</em>
+              {totalItems} <em>{totalItems === 1 ? "item" : "items"}</em>
             </h1>
           </div>
           <Link to="/shop" className="link-arrow" data-testid="cart-continue-shopping">
-            <span className="arrow">←</span> Continue
+            <span className="arrow">←</span> Continue shopping
           </Link>
         </div>
 
@@ -74,19 +74,18 @@ export default function Cart() {
           </div>
 
           <div className="cart-summary" data-testid="cart-summary">
-            <span className="eyebrow eyebrow-mute">Summary</span>
-            <h3>Ledger</h3>
+            <h3>Order Summary</h3>
             <div className="summary-row">
               <span>Subtotal</span>
               <span>₹{totalPrice.toLocaleString("en-IN")}</span>
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span>{shipping === 0 ? "Complimentary" : `₹${shipping}`}</span>
+              <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
             </div>
             {shipping > 0 && (
               <p className="summary-note">
-                Add ₹{(999 - totalPrice).toLocaleString("en-IN")} more for complimentary shipping.
+                Add ₹{(999 - totalPrice).toLocaleString("en-IN")} more for free shipping.
               </p>
             )}
             <div className="summary-row summary-total">
@@ -94,7 +93,7 @@ export default function Cart() {
               <span>₹{grandTotal.toLocaleString("en-IN")}</span>
             </div>
             <button className="btn btn-block" onClick={handleCheckout} data-testid="cart-checkout-btn">
-              <span>Proceed to Checkout →</span>
+              Proceed to Checkout
             </button>
             <Link to="/shop" className="cart-continue">← Continue shopping</Link>
           </div>

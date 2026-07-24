@@ -73,9 +73,9 @@ export default function ProductDetail() {
 
         <div className="pdp-info">
           <div className="pdp-meta-top">
-            <span>RJ · {product.id}</span>
-            <em>{product.category.replace("-", " ")}</em>
-            <span>№ {String(product.reviews).padStart(3, "0")}</span>
+            <span>SKU · {product.id}</span>
+            <em style={{ fontFamily: "var(--f-display)", fontStyle: "italic", fontSize: "0.9rem", letterSpacing: 0, textTransform: "none", color: "var(--ink)" }}>{product.category.replace("-", " ")}</em>
+            <span>{product.reviews} reviews</span>
           </div>
 
           <div className="pdp-badges">
@@ -130,7 +130,7 @@ export default function ProductDetail() {
               disabled={product.stock === 0}
               data-testid="pdp-add-to-bag"
             >
-              <span>{added ? "Added ✓" : "Add to Bag →"}</span>
+              {added ? "Added ✓" : "Add to Bag"}
             </button>
           </div>
 
@@ -145,19 +145,17 @@ export default function ProductDetail() {
 
       {related.length > 0 && (
         <section className="container pdp-related">
-          <div className="chapter-head">
-            <span className="chapter-index">↳</span>
-            <div className="chapter-title-wrap">
-              <span className="eyebrow eyebrow-mute">Complete the look</span>
-              <h2 className="chapter-title">
-                Related <em>editions.</em>
+          <div className="section-head" style={{ marginBottom: 32 }}>
+            <div className="section-head-title">
+              <span className="eyebrow">You may also like</span>
+              <h2 style={{ fontFamily: "var(--f-display)", fontSize: "clamp(1.6rem, 2.6vw, 2.2rem)", fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }}>
+                Complete the <em style={{ fontStyle: "italic", color: "var(--gold)" }}>look.</em>
               </h2>
             </div>
-            <span />
           </div>
           <div className="product-grid">
-            {related.map((p, idx) => (
-              <ProductCard key={p.id} product={p} index={idx} />
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </section>

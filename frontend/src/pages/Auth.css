@@ -42,14 +42,14 @@
 .auth-visual-copy .eyebrow { color: rgba(244,242,234,0.6); }
 .auth-visual-copy h2 {
   font-family: var(--f-display);
-  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  margin: 20px 0 16px;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 16px 0 14px;
   color: var(--paper);
 }
-.auth-visual-copy h2 em { font-style: italic; color: rgba(244,242,234,0.6); font-weight: 400; }
+.auth-visual-copy h2 em { font-style: italic; color: var(--gold-soft); font-weight: 400; }
 .auth-visual-copy p {
   color: rgba(244,242,234,0.7);
   font-size: 1rem;
@@ -93,15 +93,15 @@
 .auth-form-inner .eyebrow { margin-bottom: 12px; }
 .auth-form-inner h1 {
   font-family: var(--f-display);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
   font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin: 0 0 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule-soft);
 }
-.auth-form-inner h1 em { font-style: italic; color: var(--ink-mute); font-weight: 400; }
+.auth-form-inner h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
 
 .auth-switch {
   margin-top: 28px;

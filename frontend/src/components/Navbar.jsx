@@ -56,13 +56,13 @@ export default function Navbar() {
   return (
     <header className={`nav-header ${scrolled ? "is-scrolled" : ""}`} data-testid="site-header">
       <div className="nav-topline" data-testid="nav-topline">
-        Complimentary shipping across India · <em>over ₹999</em>
+        Free shipping across India on orders <em>over ₹999</em>
       </div>
 
       <div className="container nav-inner">
         <nav className="nav-links">
           <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} data-testid="nav-home-link">
-            Index
+            Home
           </NavLink>
 
           <div
@@ -75,7 +75,7 @@ export default function Navbar() {
               onClick={() => navigate("/shop")}
               data-testid="nav-shop-trigger"
             >
-              Archive
+              Shop
               <svg width="10" height="6" viewBox="0 0 10 6" className="chev">
                 <path d="M1 1l4 4 4-4" stroke="currentColor" fill="none" strokeWidth="1.4" />
               </svg>
@@ -99,11 +99,11 @@ export default function Navbar() {
                   </div>
                 ))}
                 <div className="mega-col mega-col-feature">
-                  <span className="eyebrow">Chapter 03 — New</span>
-                  <h4>The Festive Edit</h4>
-                  <p>Fresh kundan, kemp &amp; meenakari — for the season ahead.</p>
+                  <span className="eyebrow">New This Week</span>
+                  <h4>Festive Edit</h4>
+                  <p>Fresh kundan, temple &amp; meenakari pieces for the season ahead.</p>
                   <Link to="/shop?isNew=true" className="btn btn-small" data-testid="mega-cta">
-                    <span>Explore →</span>
+                    Explore
                   </Link>
                 </div>
               </div>
@@ -184,20 +184,20 @@ export default function Navbar() {
             <input
               autoFocus
               type="text"
-              placeholder="What are you looking for…"
+              placeholder="Search for jhumkas, kundan sets, bangles…"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               data-testid="nav-search-input"
             />
             <button type="submit" className="btn btn-small" data-testid="nav-search-submit">
-              <span>Search →</span>
+              Search
             </button>
           </form>
         </div>
       )}
 
       <div className={`nav-mobile ${mobileOpen ? "is-open" : ""}`}>
-        <NavLink to="/" end onClick={() => setMobileOpen(false)}>Index</NavLink>
+        <NavLink to="/" end onClick={() => setMobileOpen(false)}>Home</NavLink>
         {categories.map((cat) => (
           <details key={cat.id}>
             <summary>{cat.name}</summary>

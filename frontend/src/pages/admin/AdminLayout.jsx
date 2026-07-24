@@ -93,7 +93,7 @@ export default function AdminLayout() {
       <div className="admin-main">
         <header className="admin-topbar">
           <div>
-            <span className="eyebrow eyebrow-mute">Radha · Admin</span>
+            <span className="eyebrow">Dashboard</span>
           </div>
           <div className="admin-topbar-user">
             <div className="admin-avatar">{user?.name?.charAt(0).toUpperCase()}</div>
@@ -102,7 +102,7 @@ export default function AdminLayout() {
               <span>{user?.email}</span>
             </div>
             <button className="btn btn-outline btn-small" onClick={logout} data-testid="admin-signout-btn">
-              <span>Sign Out</span>
+              Sign Out
             </button>
           </div>
         </header>
