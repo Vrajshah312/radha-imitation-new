@@ -1,25 +1,22 @@
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import "./Footer.css";
+"use client";
+import Link from "next/link";
+import "@/styles/Footer.css";
 
 export default function Footer() {
   return (
     <footer className="site-footer" data-testid="site-footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <img src={logo} alt="Radha Imitation Jewellery" className="footer-brand-logo" />
-          <p>
-            Handcrafted imitation jewellery — kundan, temple, meenakari and
-            everyday pieces made to be worn and loved.
-          </p>
+          <img src="/logo.png" alt="Radha Imitation Jewellery" className="footer-brand-logo" />
+          <p>Handcrafted imitation jewellery — kundan, temple, meenakari and everyday pieces made to be worn and loved.</p>
         </div>
 
         <div className="footer-col">
           <h4>Shop</h4>
-          <Link to="/shop/necklaces" data-testid="footer-necklaces">Necklaces</Link>
-          <Link to="/shop/earrings" data-testid="footer-earrings">Earrings</Link>
-          <Link to="/shop/bangles-bracelets" data-testid="footer-bangles">Bangles</Link>
-          <Link to="/shop?bestseller=true" data-testid="footer-bestsellers">Bestsellers</Link>
+          <Link href="/shop/necklaces" data-testid="footer-necklaces">Necklaces</Link>
+          <Link href="/shop/earrings" data-testid="footer-earrings">Earrings</Link>
+          <Link href="/shop/bangles-bracelets" data-testid="footer-bangles">Bangles</Link>
+          <Link href="/shop?bestseller=true" data-testid="footer-bestsellers">Bestsellers</Link>
         </div>
 
         <div className="footer-col">

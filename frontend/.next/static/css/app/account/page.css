@@ -1,0 +1,87 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./src/styles/Profile.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+/* PROFILE */
+.profile-page.container { padding-top: 72px; padding-bottom: 120px; }
+
+.profile-page .profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 32px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-display);
+  font-size: 1.8rem;
+  letter-spacing: -0.01em;
+  border-radius: 50%;
+}
+.profile-header h1 {
+  font-family: var(--f-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 6px 0 0;
+}
+.profile-header h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 32px;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+@media (max-width: 780px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}
+
+.profile-card {
+  border: 1px solid var(--rule-soft);
+  padding: 28px;
+  background: #fff;
+  border-radius: 12px;
+}
+.profile-card h3 {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.92rem;
+}
+.profile-row:last-child { border-bottom: 0; }
+.profile-row > span:first-child {
+  color: var(--ink-mute);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.profile-row > span:last-child { color: var(--ink); text-align: right; }
+
+.profile-empty {
+  color: var(--ink-mute);
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 24px 0;
+}
+

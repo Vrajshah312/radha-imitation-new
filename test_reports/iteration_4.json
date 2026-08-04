@@ -1,0 +1,45 @@
+{
+  "summary": "Full backend + frontend testing of the converted Next.js 14 App Router Radha Jewellery storefront. 16/16 backend API tests pass (pytest, JUnit at /app/test_reports/pytest/nextjs_results.xml). All frontend flows work end-to-end via client-side navigation: home sections render, /shop grid has 18 products, /shop/[category] & /shop/[category]/[subcategory] filter correctly, header search navigates to /shop?search=, PDP shows title/thumbs/qty stepper and Add to Bag updates cart-count with toast, /cart lists items with qty controls, protected routes (/checkout, /account) redirect logged-out users to /login?redirect=..., register/login set httpOnly cookie and land on /account, checkout submits and shows checkout-success with a PREVIEW-xxxxxx order id and clears the cart. One real frontend bug found: cart is lost on hard page reload due to a localStorage race in CartContext.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "CartContext (src/context/CartContext.jsx)",
+        "issue": "Cart is wiped on every hard page reload / direct URL entry. On first render items=[] and the writer useEffect fires immediately, overwriting localStorage['radha_cart'] with '[]' before/around the reader useEffect can restore it. Verified: after adding p001 to cart (localStorage has 1 item), navigating with page.goto('/cart') shows 0 items and localStorage is []. Client-side navigation (Link/router.push) works fine because the provider does not remount.",
+        "selector": "localStorage 'radha_cart' after full reload",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_nextjs_api.py",
+    "/app/test_reports/pytest/nextjs_results.xml"
+  ],
+  "action_items": [
+    "Fix CartContext hydration race: gate the localStorage writer with a 'hydrated' flag so it only starts writing after the initial read has completed. Example: add const [hydrated,setHydrated]=useState(false); set it true at the end of the reader effect; guard writer with `if (!hydrated) return;`. This will make the cart survive page reloads, direct /cart entry and bookmarking."
+  ],
+  "critical_code_review_comments": [
+    "CartContext localStorage race — writer effect runs on initial render with items=[] and overwrites saved state before reader effect can restore it. Needs a hydration flag.",
+    "src/lib/api.js builds URL with `path.startsWith('http') ? path : \\`/api${path}\\``; if a caller ever passes a path already starting with /api, it becomes /api/api/... — minor, but worth a guard.",
+    "Multiple 401s from /api/auth/me in browser console on every public page load are expected but noisy; consider a silent fetch or a mode flag to suppress the error logging when user is anonymous.",
+    "Register/Login pages: form submit works but requires ~1.5–2s hydration in dev before onClick is wired; native GET fallback exposes password in URL if pressed too early. Consider adding `action='#'` and `noValidate`, or a server action, to fail safe pre-hydration."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_nextjs_api.py"
+  ],
+  "success_rate": {
+    "backend": "100% (16/16)",
+    "frontend": "~92% (1 real bug: cart lost on hard reload)"
+  },
+  "test_credentials": "Demo auth accepts any valid input (min 6-char password). Used random qa*/buyer*@test.com throughout.",
+  "seed_data_creation": "None — sample data (18 products, 3 categories) is bundled in wp.js fallback. Test users are ephemeral (in-memory).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend suite at /app/backend/tests/test_nextjs_api.py covers /api/mode, /api/products (list/filters/search/single/404), /api/categories, auth register/login/me/logout with cookie, and orders (auth-required + preview). Run: `pytest /app/backend/tests/test_nextjs_api.py -v`. All API responses are wrapped: `/api/products` -> {count, products:[...]}, `/api/products/:slug` -> {product:{...}}, `/api/categories` -> {categories:[...]} — frontend expects this shape, so do NOT change API to raw arrays. Known issue to retest after fix: cart persistence across hard reload (see CartContext.jsx). All other flows verified working with client-side navigation.",
+  "rca of the issue": "CartContext hydration race — In CartProvider, useState initialises items=[] on the server/first client render. Two useEffects then run: (1) reads localStorage.getItem('radha_cart') and calls setItems(saved); (2) has [items] deps and calls localStorage.setItem(..., JSON.stringify(items)). Effect (2) runs on mount with items=[] and immediately overwrites the saved value BEFORE effect (1)'s setItems has caused a re-render. Reproduction: 1) open /product/p001, click Add to Bag → cart-count=1, localStorage='[{p001,qty:1}]'. 2) page.goto('/cart') (full reload) → items=0 rendered, localStorage=[]. Mitigation: add `const [hydrated, setHydrated] = useState(false);` set true after the read, and early-return from the write effect while !hydrated."
+}
