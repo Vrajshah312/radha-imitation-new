@@ -1,22 +1,81 @@
-import prisma from "../lib/prisma.js";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { isLive } from "../lib/mode.js";
+import * as woo from "../lib/woo.js";
 
-const includeImages = { images: { orderBy: { position: "asc" } } };
-const mapProduct = (product) => product && ({ ...product, category: product.categoryId, subcategory: product.subcategoryId, price: Number(product.price), mrp: Number(product.mrp), rating: Number(product.rating), images: product.images.map((image) => image.url) });
+const dir = path.dirname(fileURLToPath(import.meta.url));
+const seed = JSON.parse(fs.readFileSync(path.join(dir, "../data/products.json"), "utf8"));
 
-export async function getAll() { return (await prisma.product.findMany({ include: includeImages, orderBy: { createdAt: "desc" } })).map(mapProduct); }
-export async function getById(id) { return mapProduct(await prisma.product.findUnique({ where: { id }, include: includeImages })); }
-async function newId() { const count = await prisma.product.count(); return `p${String(count + 1).padStart(3, "0")}`; }
+// DEMO data lives in memory (seeded from JSON). Admin edits persist until the
+// server restarts. LIVE data is read from WordPress/WooCommerce via GraphQL.
+let demoProducts = seed.map((p) => ({ ...p }));
+
+const clone = (p) => (p ? { ...p, images: [...(p.images || [])], colors: [...(p.colors || [])] } : p);
+const nextId = () => `p${String(demoProducts.length + 1).padStart(3, "0")}`;
+
+export async function getAll() {
+  if (isLive()) return woo.getProducts();
+  return demoProducts.map(clone);
+}
+
+export async function getById(id) {
+  if (isLive()) return woo.getProductById(id);
+  return clone(demoProducts.find((p) => p.id === id) || null);
+}
+
 export async function create(data) {
-  const product = await prisma.product.create({ data: { id: data.id || await newId(), name: data.name, categoryId: data.category, subcategoryId: data.subcategory, price: Number(data.price), mrp: Number(data.mrp), rating: Number(data.rating ?? 0), reviews: Number(data.reviews ?? 0), stock: Number(data.stock ?? 0), material: data.material || "", colors: data.colors || [], isNew: !!data.isNew, isBestseller: !!data.isBestseller, description: data.description || "", images: { create: (data.images?.length ? data.images : [`https://picsum.photos/seed/${encodeURIComponent(data.name || "product")}/700/850`]).map((url, position) => ({ url, position })) } }, include: includeImages });
-  return mapProduct(product);
+  const product = {
+    id: data.id || nextId(),
+    name: data.name,
+    category: data.category,
+    subcategory: data.subcategory,
+    price: Number(data.price),
+    mrp: Number(data.mrp),
+    rating: Number(data.rating ?? 0),
+    reviews: Number(data.reviews ?? 0),
+    stock: Number(data.stock ?? 0),
+    material: data.material || "",
+    colors: data.colors || [],
+    isNew: !!data.isNew,
+    isBestseller: !!data.isBestseller,
+    description: data.description || "",
+    images: data.images?.length
+      ? data.images
+      : [`https://picsum.photos/seed/${encodeURIComponent(data.name || "product")}/700/850`],
+  };
+  demoProducts.unshift(product);
+  return clone(product);
 }
+
 export async function update(id, updates) {
-  try {
-    const data = { name: updates.name, categoryId: updates.category, subcategoryId: updates.subcategory, price: updates.price === undefined ? undefined : Number(updates.price), mrp: updates.mrp === undefined ? undefined : Number(updates.mrp), rating: updates.rating === undefined ? undefined : Number(updates.rating), reviews: updates.reviews === undefined ? undefined : Number(updates.reviews), stock: updates.stock === undefined ? undefined : Number(updates.stock), material: updates.material, colors: updates.colors, isNew: updates.isNew, isBestseller: updates.isBestseller, description: updates.description };
-    if (updates.images) data.images = { deleteMany: {}, create: updates.images.map((url, position) => ({ url, position })) };
-    return mapProduct(await prisma.product.update({ where: { id }, data, include: includeImages }));
-  } catch { return null; }
+  const product = demoProducts.find((p) => p.id === id);
+  if (!product) return null;
+  for (const field of ["name", "category", "subcategory", "material", "colors", "isNew", "isBestseller", "description", "images"]) {
+    if (updates[field] !== undefined) product[field] = updates[field];
+  }
+  for (const field of ["price", "mrp", "rating", "reviews", "stock"]) {
+    if (updates[field] !== undefined) product[field] = Number(updates[field]);
+  }
+  return clone(product);
 }
-export async function remove(id) { try { await prisma.product.delete({ where: { id } }); return true; } catch { return false; } }
-export async function adjustStock(id, delta) { try { return mapProduct(await prisma.product.update({ where: { id }, data: { stock: { increment: Number(delta) } }, include: includeImages })); } catch { return null; } }
-export async function setStock(id, stock) { try { return mapProduct(await prisma.product.update({ where: { id }, data: { stock: Math.max(0, Number(stock)) }, include: includeImages })); } catch { return null; } }
+
+export async function remove(id) {
+  const before = demoProducts.length;
+  demoProducts = demoProducts.filter((p) => p.id !== id);
+  return demoProducts.length < before;
+}
+
+export async function adjustStock(id, delta) {
+  const product = demoProducts.find((p) => p.id === id);
+  if (!product) return null;
+  product.stock = Math.max(0, product.stock + Number(delta));
+  return clone(product);
+}
+
+export async function setStock(id, stock) {
+  const product = demoProducts.find((p) => p.id === id);
+  if (!product) return null;
+  product.stock = Math.max(0, Number(stock));
+  return clone(product);
+}

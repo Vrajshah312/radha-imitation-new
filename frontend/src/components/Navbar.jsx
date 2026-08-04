@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import api from "../services/api";
+import ModeToggle from "./ModeToggle.jsx";
 import logo from "../assets/logo.png";
 import "./Navbar.css";
 
@@ -132,6 +133,7 @@ export default function Navbar() {
         </button>
 
         <div className="nav-actions">
+          <ModeToggle />
           <button
             className="nav-icon-btn"
             aria-label="Search"
@@ -218,6 +220,7 @@ export default function Navbar() {
         <NavLink to="/shop?bestseller=true" onClick={() => setMobileOpen(false)}>
           Bestsellers
         </NavLink>
+        <div className="nav-mobile-mode"><ModeToggle /></div>
         {user ? (
           <>
             <NavLink to="/profile" onClick={() => setMobileOpen(false)}>My Account</NavLink>

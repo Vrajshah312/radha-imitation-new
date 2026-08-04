@@ -1,23 +1,63 @@
-import prisma from "../lib/prisma.js";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { isLive } from "../lib/mode.js";
+import * as woo from "../lib/woo.js";
 
-const includeSubcategories = { subcategories: { orderBy: { name: "asc" } } };
-const mapCategory = (category) => ({ ...category, subcategories: category.subcategories || [] });
+const dir = path.dirname(fileURLToPath(import.meta.url));
+const seed = JSON.parse(fs.readFileSync(path.join(dir, "../data/categories.json"), "utf8"));
 
-export async function getAll() { return (await prisma.category.findMany({ include: includeSubcategories, orderBy: { name: "asc" } })).map(mapCategory); }
-export async function getById(id) { const category = await prisma.category.findUnique({ where: { id }, include: includeSubcategories }); return category && mapCategory(category); }
+let demoCategories = seed.map((c) => ({ ...c, subcategories: c.subcategories.map((s) => ({ ...s })) }));
+
+const slugify = (name) => name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+const clone = (c) => (c ? { ...c, subcategories: (c.subcategories || []).map((s) => ({ ...s })) } : c);
+
+export async function getAll() {
+  if (isLive()) return woo.getCategories();
+  return demoCategories.map(clone);
+}
+
+export async function getById(id) {
+  if (isLive()) return (await woo.getCategories()).find((c) => c.id === id) || null;
+  const category = demoCategories.find((c) => c.id === id);
+  return category ? clone(category) : null;
+}
+
 export async function create(data) {
-  const id = data.id || slugify(data.name);
-  const category = await prisma.category.create({ data: { id, name: data.name, tagline: data.tagline || "", subcategories: { create: (data.subcategories || []).map((sub) => ({ id: sub.id || slugify(sub.name), name: sub.name })) } }, include: includeSubcategories });
-  return mapCategory(category);
+  const category = {
+    id: data.id || slugify(data.name),
+    name: data.name,
+    tagline: data.tagline || "",
+    subcategories: (data.subcategories || []).map((sub) => ({ id: sub.id || slugify(sub.name), name: sub.name })),
+  };
+  demoCategories.push(category);
+  return clone(category);
 }
+
 export async function update(id, updates) {
-  try { return mapCategory(await prisma.category.update({ where: { id }, data: { name: updates.name, tagline: updates.tagline }, include: includeSubcategories })); } catch { return null; }
+  const category = demoCategories.find((c) => c.id === id);
+  if (!category) return null;
+  if (updates.name !== undefined) category.name = updates.name;
+  if (updates.tagline !== undefined) category.tagline = updates.tagline;
+  return clone(category);
 }
-export async function remove(id) { try { await prisma.category.delete({ where: { id } }); return true; } catch { return false; } }
+
+export async function remove(id) {
+  const before = demoCategories.length;
+  demoCategories = demoCategories.filter((c) => c.id !== id);
+  return demoCategories.length < before;
+}
+
 export async function addSubcategory(categoryId, sub) {
-  try { await prisma.subcategory.create({ data: { id: sub.id || slugify(sub.name), name: sub.name, categoryId } }); return getById(categoryId); } catch { return null; }
+  const category = demoCategories.find((c) => c.id === categoryId);
+  if (!category) return null;
+  category.subcategories.push({ id: sub.id || slugify(sub.name), name: sub.name });
+  return clone(category);
 }
+
 export async function removeSubcategory(categoryId, subId) {
-  try { await prisma.subcategory.delete({ where: { id_categoryId: { id: subId, categoryId } } }); return getById(categoryId); } catch { return null; }
+  const category = demoCategories.find((c) => c.id === categoryId);
+  if (!category) return null;
+  category.subcategories = category.subcategories.filter((s) => s.id !== subId);
+  return clone(category);
 }
-function slugify(name) { return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }

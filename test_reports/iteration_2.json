@@ -1,0 +1,33 @@
+{
+  "summary": "Full backend + frontend regression on the Node/Express + WordPress-GraphQL mode-aware Radha Jewellery app. All 26 pytest cases pass (health, /mode, demo catalogue with filters, single product, live-mode empty fail-soft, auth register/login/me, admin login, admin catalog write-guard 409 in live / 201 in demo, admin non-catalog endpoints in both modes, order create+list). Frontend storefront renders, entry overlay dismisses, Data-source toggle is visible with correct testids, DEMO mode shows products on Home and 20 on /shop, LIVE mode reloads to empty state 'No products found.' with red warning dot, toggling back restores products. X-Data-Mode header is being sent by the axios interceptor. Admin login + dashboard + products list all work.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Shop / product cards", "issues": ["Several demo product images are clearly not jewellery (a MacBook on a wooden table, railway tracks, etc.). These are stock placeholders that leaked into the demo JSON and look out of place. Replace image URLs in /app/backend/data/*.json with actual jewellery imagery."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Cosmetic) Replace non-jewellery placeholder images in the demo product JSON so the Shop/Home cards look on-brand."
+  ],
+  "critical_code_review_comments": [
+    "Order controller reads item.id/item.qty — contract is fine but not documented; consider adding request validation (Joi/Zod) on POST /api/orders to reject undefined ids with a 400 instead of a 404 like 'Product undefined not found'.",
+    "Response shapes are inconsistent: /categories returns {categories:[...]}, /products returns {products:[...]} but /products/:id returns {product:{...}} while some admin endpoints return bare arrays. Standardise to make client parsing simpler.",
+    "The auth register endpoint silently lowercases email; document this so clients don't get confused (case-insensitive login is fine, but /auth/me returning a different case than what was submitted was surprising during testing).",
+    "In-memory User/Order/Banner storage is fine for demo but should be flagged in README — a backend restart wipes all customer accounts and orders."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (new)"
+  ],
+  "success_rate": {"backend": "100% (26/26)", "frontend": "100% of tested flows"},
+  "test_credentials": "Admin admin@radhajewellery.com / Admin@123 (from /app/memory/test_credentials.md). Fresh customers registered per-run with TEST_<uuid>@example.com / Passw0rd!.",
+  "seed_data_creation": "Backend tests create one TEST_ prefixed product (demo mode) and one order per run; these live only in in-memory stores and vanish on backend restart. No persistent DB writes.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend is Node/Express under supervisor program 'nodeapi' (python 'backend' program is intentionally stopped). All routes /api/*. Data-mode driven by X-Data-Mode header (default demo). Live mode returning empty catalogue and 409 on admin catalog writes is EXPECTED — do not report as bugs. Use /app/backend/tests/backend_test.py as the pytest regression file. Frontend entry-overlay auto-dismisses after ~2.5s — wait for state='detached' before interacting. Mode toggle testids: mode-toggle, mode-toggle-demo, mode-toggle-live, mode-live-warning."
+}
