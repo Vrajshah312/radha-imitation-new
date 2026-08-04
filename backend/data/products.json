@@ -13,7 +13,7 @@
     "colors": ["Gold", "Rose Gold"],
     "isNew": true,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/kundan1/700/850", "https://picsum.photos/seed/kundan1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1738754712726-d126c15e206b?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1738754719555-05aca36707b1?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A regal kundan necklace set finished with hand-set stones and dangling pearl drops. Perfect for weddings, sangeet nights and festive occasions."
   },
   {
@@ -30,7 +30,7 @@
     "colors": ["Gold"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/kundan2/700/850", "https://picsum.photos/seed/kundan2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1707149974686-0c198fdebd51?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1751606615009-30f61ff1a510?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A close-fit choker paired with a delicate maang tikka, layered in kundan and polki-inspired stones."
   },
   {
@@ -47,7 +47,7 @@
     "colors": ["Antique Gold"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/temple1/700/850", "https://picsum.photos/seed/temple1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1601121141499-17ae80afc03a?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Traditional temple jewellery featuring hand-finished goddess motifs, ideal for classical dance and festive wear."
   },
   {
@@ -64,7 +64,7 @@
     "colors": ["Antique Gold"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/temple2/700/850", "https://picsum.photos/seed/temple2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1601121141418-c1caa10a2a0b?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1601121141461-920cb1993441?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A long, layered temple haram with kemp stone detailing, designed to make a statement at weddings and pujas."
   },
   {
@@ -81,7 +81,7 @@
     "colors": ["Maroon", "Black"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/choker1/700/850", "https://picsum.photos/seed/choker1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1756483560049-e7b2208f99a0?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1716504627981-22728cb2d2e2?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A velvet-backed choker with sparkling cubic zirconia detailing — a modern twist on a classic silhouette."
   },
   {
@@ -98,7 +98,7 @@
     "colors": ["Gold"],
     "isNew": false,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/choker2/700/850", "https://picsum.photos/seed/choker2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1758995115857-2de1eb6283d0?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/flagged/photo-1570055349452-29232699cc63?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Delicate layered chains meet a structured choker base, finished with tiny faux pearl accents."
   },
   {
@@ -115,7 +115,7 @@
     "colors": ["Oxidised Silver"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/jhumka1/700/850", "https://picsum.photos/seed/jhumka1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1714733831162-0a6e849141be?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1778148046782-2b5c2ce37612?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Classic oxidised jhumkas with intricate bell detailing — an everyday-ethnic staple."
   },
   {
@@ -132,7 +132,7 @@
     "colors": ["Gold"],
     "isNew": true,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/jhumka2/700/850", "https://picsum.photos/seed/jhumka2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1779475546066-742c9a580de1?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1778148046574-c1509f5a40d4?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Our signature jhumkas — gently domed bells trimmed with pearl beading for a soft festive glow."
   },
   {
@@ -149,7 +149,7 @@
     "colors": ["Gold", "Rose Gold"],
     "isNew": false,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/studs1/700/850", "https://picsum.photos/seed/studs1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1626784215021-2e39ccf971cd?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1638734205377-f21045bf6ebe?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Everyday studs with a subtle sparkle — light enough for daily wear, pretty enough for the office."
   },
   {
@@ -166,7 +166,7 @@
     "colors": ["Gold"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/studs2/700/850", "https://picsum.photos/seed/studs2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1626784215013-13322cb0e471?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1589095053205-8fc842336f4a?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Floral-shaped kundan tops with a raised centre stone — small in size, big on detail."
   },
   {
@@ -183,7 +183,7 @@
     "colors": ["Gold"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/chandbali1/700/850", "https://picsum.photos/seed/chandbali1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1651160670627-2896ddf7822f?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1778148046574-c1509f5a40d4?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Half-moon chandbalis inspired by palace architecture, finished with soft pearl drops."
   },
   {
@@ -200,7 +200,7 @@
     "colors": ["Gold", "Green-Pink Enamel"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/chandbali2/700/850", "https://picsum.photos/seed/chandbali2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1779475546066-742c9a580de1?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1651160670627-2896ddf7822f?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Hand-enamelled chandbalis in a Nizami colour palette — a pop of colour for festive dressing."
   },
   {
@@ -217,7 +217,7 @@
     "colors": ["Gold"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/kada1/700/850", "https://picsum.photos/seed/kada1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1721034909472-390b9325f415?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1720686614643-f7aa4632b77e?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A pair of broad vintage-finish kada with engraved motifs, sold as a set of two."
   },
   {
@@ -234,7 +234,7 @@
     "colors": ["Antique Gold"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/kada2/700/850", "https://picsum.photos/seed/kada2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1723522938816-9c57a8c8ce61?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1720528347642-ba00bbf6794d?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A single statement kada with deep Rajwadi engraving, built to be worn solo or stacked."
   },
   {
@@ -251,7 +251,7 @@
     "colors": ["Pink-Green", "Blue-Gold"],
     "isNew": false,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/meena1/700/850", "https://picsum.photos/seed/meena1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1758995116383-f51775896add?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1740567389909-b36e9cadbef9?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A set of four meenakari bangles in a floral bloom pattern — stack them for a full-arm festive look."
   },
   {
@@ -268,7 +268,7 @@
     "colors": ["Red-Gold"],
     "isNew": true,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/meena2/700/850", "https://picsum.photos/seed/meena2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1741071520895-47d81779c11e?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1758995116383-f51775896add?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "Broad meenakari bangles with a fiery gulmohar-red palette, finished with a glossy enamel coat."
   },
   {
@@ -285,7 +285,7 @@
     "colors": ["Gold"],
     "isNew": false,
     "isBestseller": false,
-    "images": ["https://picsum.photos/seed/charm1/700/850", "https://picsum.photos/seed/charm1b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1611170947204-5ab96c3e37a1?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1611107683227-e9060eccd846?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A layered charm bracelet mixing coins, beads and tiny bells for a boho-festive edge."
   },
   {
@@ -302,7 +302,7 @@
     "colors": ["Gold-Blue"],
     "isNew": true,
     "isBestseller": true,
-    "images": ["https://picsum.photos/seed/charm2/700/850", "https://picsum.photos/seed/charm2b/700/850"],
+    "images": ["https://images.unsplash.com/photo-1633810543462-77c4a3b13f07?auto=format&fit=crop&w=800&h=1000&q=80", "https://images.unsplash.com/photo-1650455221359-3aebf920bcc5?auto=format&fit=crop&w=800&h=1000&q=80"],
     "description": "A dainty chain bracelet finished with an enamelled peacock charm — India's national bird, reimagined in miniature."
   }
 ]

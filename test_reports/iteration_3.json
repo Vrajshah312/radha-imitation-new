@@ -1,0 +1,28 @@
+{
+  "summary": "Verified this iteration's three features (on-brand demo images, live-mode banner, live-order friendly handling) plus demo regression. Backend: 29/29 pytest cases pass, including 2 new (unsplash-jewellery images across all demo products; live order 404 friendly, no 500) and 1 spec-verification (demo order p001 qty=2 returns 201 with id ORDxxxx, total 4998, status pending; and appears in GET /orders). Frontend: DEMO home & /shop render only images.unsplash.com images (20 loaded on home, 36 loaded on /shop across 40 cards); zero picsum.photos leftovers. In DEMO no [data-testid=live-mode-banner] exists. Clicking mode-toggle-live triggers reload -> live-mode-banner appears at top with WARNING copy ('Live mode is on — no WordPress store is connected yet ...') and a live-banner-switch-demo button; clicking it returns to demo, banner disappears, and unsplash products re-render. Product detail page opens.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "In-memory Order/User/Product stores still get polluted across test runs (a TEST_b414c5 ring from a prior admin-create test is now visible on the storefront with a broken /a.jpg image). Consider filtering TEST_-prefixed items from public listings, or namespacing admin-created demo products so regression tests don't leak into the shopfront.",
+    "LiveModeBanner copy has a small spacing bug — 'Connect your store (WORDPRESS_GRAPHQL_URL) orswitch back to Demo' — missing a space before 'switch'.",
+    "React Router v6 future-flag warnings appear on every navigation (v7_startTransition, v7_relativeSplatPath). Opt-in to silence, or upgrade."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (added test_demo_products_have_unsplash_jewellery_images, test_live_order_create_returns_friendly_not_500, test_demo_order_matches_spec)"
+  ],
+  "success_rate": {"backend": "100% (29/29)", "frontend": "100% of tested flows"},
+  "test_credentials": "Admin admin@radhajewellery.com / Admin@123. Customer accounts registered per-run as TEST_<uuid>@example.com / Passw0rd!.",
+  "seed_data_creation": "Backend tests continue to create a TEST_-prefixed demo product and a demo order in the in-memory store. These vanish on backend restart.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Node/Express under supervisor 'nodeapi'. Data mode via X-Data-Mode header (default demo); front-end persists via localStorage 'radha_data_mode' and reloads on toggle. Live-mode banner is only rendered when mode==='live' inside StorefrontLayout. Testids in use: mode-toggle, mode-toggle-demo, mode-toggle-live, live-mode-banner, live-banner-switch-demo, cart-count, entry-overlay (auto-detaches ~2.5s). Live-mode empty catalogue and 404-on-live-order-for-demo-id are EXPECTED, not bugs. Use /app/backend/tests/backend_test.py for regression."
+}

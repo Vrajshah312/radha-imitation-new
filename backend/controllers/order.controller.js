@@ -1,8 +1,9 @@
 import * as Order from "../models/Order.js";
 import * as Product from "../models/Product.js";
 
-// Customer creates an order at checkout. Also decrements stock for
-// each purchased product (basic inventory sync).
+// Customer creates an order at checkout. In Demo mode the order is stored in
+// memory and stock is decremented. In Live mode a real WooCommerce order is
+// created in WordPress (Cash-on-Delivery).
 export async function createOrder(req, res) {
   const { items, shippingAddress } = req.body;
 
@@ -21,6 +22,7 @@ export async function createOrder(req, res) {
     }
     orderItems.push({
       productId: product.id,
+      databaseId: product.databaseId, // present only in Live mode
       name: product.name,
       price: product.price,
       qty: item.qty,
@@ -32,18 +34,27 @@ export async function createOrder(req, res) {
   const shipping = subtotal >= 999 || subtotal === 0 ? 0 : 79;
   const total = subtotal + shipping;
 
-  const order = await Order.create({
-    userId: req.user.id,
-    customerName: req.user.name,
-    customerEmail: req.user.email,
-    items: orderItems,
-    shippingAddress,
-    subtotal,
-    shipping,
-    total,
-  });
+  let order;
+  try {
+    order = await Order.create({
+      userId: req.user.id,
+      customerName: req.user.name,
+      customerEmail: req.user.email,
+      items: orderItems,
+      shippingAddress,
+      subtotal,
+      shipping,
+      total,
+    });
+  } catch (err) {
+    const message =
+      err.code === "WP_NOT_CONFIGURED"
+        ? "Live orders need a connected WordPress store. Set WORDPRESS_GRAPHQL_URL (and WORDPRESS_AUTH_TOKEN) or switch to Demo mode."
+        : err.message || "Could not place the order in the live store.";
+    return res.status(502).json({ message });
+  }
 
-  // Decrement stock for each item purchased.
+  // Demo only: keep stock roughly in sync. In Live mode WooCommerce owns stock.
   await Promise.all(orderItems.map((item) => Product.adjustStock(item.productId, -item.qty)));
 
   return res.status(201).json({ order });

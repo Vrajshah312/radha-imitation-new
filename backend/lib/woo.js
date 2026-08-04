@@ -1,7 +1,7 @@
 // Maps WooCommerce data (via WPGraphQL + WooGraphQL) into the shapes the
-// storefront already expects. Read-only: the live catalogue is managed in
-// WordPress. All functions fail soft (return [] / null) so a missing or
-// misconfigured endpoint never crashes the API.
+// storefront already expects, and creates real orders in WordPress. Read
+// helpers fail soft (return [] / null). createOrder throws on failure so the
+// controller can surface a clear message.
 import { wpQuery, isWordPressConfigured } from "./wpgraphql.js";
 
 const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -42,6 +42,13 @@ const PRODUCT_FIELDS = `
 
 const PRODUCTS_QUERY = `query WooProducts($first: Int!) { products(first: $first) { nodes { ${PRODUCT_FIELDS} } } }`;
 const PRODUCT_QUERY = `query WooProduct($slug: ID!) { product(id: $slug, idType: SLUG) { ${PRODUCT_FIELDS} } }`;
+
+const CREATE_ORDER = `
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    order { databaseId orderNumber status total date }
+  }
+}`;
 
 function mapCategory(node) {
   return {
@@ -84,6 +91,7 @@ function mapProduct(node, childParent = {}) {
 
   return {
     id: node.slug || String(node.databaseId),
+    databaseId: node.databaseId,
     name: node.name,
     category,
     subcategory,
@@ -121,6 +129,61 @@ export async function getProductById(slug) {
     console.warn("[woo] getProductById failed:", error.message);
     return null;
   }
+}
+
+// Creates a real WooCommerce order via the WooGraphQL createOrder mutation.
+// Requires WORDPRESS_GRAPHQL_URL and (for order creation) WORDPRESS_AUTH_TOKEN
+// belonging to a WordPress user allowed to create orders. Uses Cash-on-Delivery
+// so no payment gateway is needed. Throws on any failure.
+export async function createOrder(payload) {
+  const lineItems = (payload.items || [])
+    .filter((item) => item.databaseId)
+    .map((item) => ({ productId: Number(item.databaseId), quantity: item.qty }));
+
+  if (!lineItems.length) {
+    const error = new Error("These products could not be matched to your WordPress store.");
+    error.code = "NO_LINE_ITEMS";
+    throw error;
+  }
+
+  const [firstName, ...rest] = String(payload.customerName || "Guest").trim().split(" ");
+  const lastName = rest.join(" ") || "-";
+  const address1 = payload.shippingAddress || "";
+
+  const input = {
+    paymentMethod: "cod",
+    paymentMethodTitle: "Cash on Delivery",
+    isPaid: false,
+    billing: { firstName, lastName, email: payload.customerEmail, address1, country: "IN" },
+    shipping: { firstName, lastName, address1, country: "IN" },
+    lineItems,
+  };
+
+  const data = await wpQuery(CREATE_ORDER, { input });
+  const order = data.createOrder?.order;
+  if (!order) throw new Error("WordPress did not return the created order.");
+
+  return {
+    id: order.orderNumber || String(order.databaseId),
+    userId: Number(payload.userId),
+    customerName: payload.customerName,
+    customerEmail: payload.customerEmail,
+    shippingAddress: payload.shippingAddress,
+    subtotal: payload.subtotal,
+    shipping: payload.shipping,
+    total: num(order.total) || payload.total,
+    status: (order.status || "pending").toLowerCase(),
+    items: (payload.items || []).map((item, index) => ({
+      id: index + 1,
+      productId: item.productId,
+      name: item.name,
+      price: item.price,
+      qty: item.qty,
+      image: item.image,
+    })),
+    createdAt: order.date || new Date().toISOString(),
+    source: "wordpress",
+  };
 }
 
 export { isWordPressConfigured };

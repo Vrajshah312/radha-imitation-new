@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
+import LiveModeBanner from "./components/LiveModeBanner.jsx";
 import Footer from "./components/Footer.jsx";
 import CartToast from "./components/CartToast.jsx";
 import Breadcrumbs from "./components/Breadcrumbs.jsx";
@@ -27,6 +28,7 @@ import AdminBanners from "./pages/admin/Banners.jsx";
 function StorefrontLayout({ children }) {
   return (
     <>
+      <LiveModeBanner />
       <Navbar />
       <Breadcrumbs />
       <main>{children}</main>

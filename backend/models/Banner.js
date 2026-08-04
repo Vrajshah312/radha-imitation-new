@@ -8,7 +8,7 @@ let banners = [
     description: "Discover statement jewellery for every celebration.",
     buttonLabel: "Shop the Festive Edit",
     buttonLink: "/shop?isNew=true",
-    image: "https://picsum.photos/seed/radha-festive/1600/850",
+    image: "https://images.unsplash.com/photo-1600685890506-593fdf55949b?auto=format&fit=crop&w=1600&q=80",
     active: true,
     order: 1,
   },

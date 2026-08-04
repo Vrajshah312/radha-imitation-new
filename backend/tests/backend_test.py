@@ -88,6 +88,22 @@ def test_demo_single_product():
     assert p.get("id") == "p001"
 
 
+# --- On-brand images (this iteration) ---
+def test_demo_products_have_unsplash_jewellery_images():
+    r = requests.get(f"{BASE}/products", headers={"X-Data-Mode": "demo"})
+    assert r.status_code == 200
+    products = _products(r.json())
+    # exclude TEST_ prefixed items from prior runs
+    real = [p for p in products if not str(p.get("id", "")).startswith("TEST_")]
+    assert len(real) >= 18
+    for p in real:
+        imgs = p.get("images") or []
+        assert imgs, f"product {p.get('id')} has no images"
+        first = imgs[0]
+        assert "images.unsplash.com" in first, f"product {p.get('id')} first image not unsplash: {first}"
+        assert "picsum.photos" not in first
+
+
 def test_live_products_empty():
     r = requests.get(f"{BASE}/products", headers={"X-Data-Mode": "live"})
     assert r.status_code == 200
@@ -190,3 +206,42 @@ def test_order_create_and_list(customer_token):
     body = r2.json()
     orders = body if isinstance(body, list) else body.get("orders", body.get("data", []))
     assert len(orders) >= 1
+
+
+# --- Live order friendly handling (this iteration) ---
+def test_live_order_create_returns_friendly_not_500(customer_token):
+    token, _ = customer_token
+    payload = {"items": [{"id": "p001", "qty": 2}], "shippingAddress": "12 MG Road, Mumbai"}
+    r = requests.post(
+        f"{BASE}/orders",
+        json=payload,
+        headers={"Authorization": f"Bearer {token}", "X-Data-Mode": "live"},
+        timeout=15,
+    )
+    # No WordPress configured — product not resolvable; 404 is expected/acceptable.
+    # Key: must NOT be a 500 or hang.
+    assert r.status_code in (400, 404, 409, 502), f"unexpected {r.status_code}: {r.text[:200]}"
+    assert r.status_code != 500
+
+
+def test_demo_order_matches_spec(customer_token):
+    """Regression: demo order create with the exact spec payload returns 201 and total=4998."""
+    token, _ = customer_token
+    payload = {"items": [{"id": "p001", "qty": 2}], "shippingAddress": "12 MG Road, Mumbai"}
+    r = requests.post(
+        f"{BASE}/orders",
+        json=payload,
+        headers={"Authorization": f"Bearer {token}", "X-Data-Mode": "demo"},
+    )
+    assert r.status_code in (200, 201), r.text
+    order = r.json().get("order", r.json())
+    # id like ORD1001, total 4998 (p001 = 2499 * 2)
+    assert str(order.get("id", "")).startswith("ORD"), order
+    assert order.get("total") == 4998, order
+    assert order.get("status") == "pending"
+
+    r2 = requests.get(f"{BASE}/orders", headers={"Authorization": f"Bearer {token}", "X-Data-Mode": "demo"})
+    assert r2.status_code == 200
+    body = r2.json()
+    orders = body if isinstance(body, list) else body.get("orders", body.get("data", []))
+    assert any(o.get("id") == order.get("id") for o in orders)

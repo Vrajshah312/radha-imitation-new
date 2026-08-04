@@ -15,9 +15,9 @@ function Reveal({ children, className = "" }) {
 }
 
 const CATEGORY_IMG = {
-  necklaces: "https://images.unsplash.com/photo-1599459183200-59c7687a1c22?w=1200&q=80",
-  earrings: "https://images.unsplash.com/photo-1635767582909-345c063a70e7?w=1200&q=80",
-  "bangles-bracelets": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=1200&q=80",
+  necklaces: "https://images.unsplash.com/photo-1640183298005-3a4497cc6a37?auto=format&fit=crop&w=1200&q=80",
+  earrings: "https://images.unsplash.com/photo-1651160670627-2896ddf7822f?auto=format&fit=crop&w=1200&q=80",
+  "bangles-bracelets": "https://images.unsplash.com/photo-1758995116383-f51775896add?auto=format&fit=crop&w=1200&q=80",
 };
 
 const VALUE_ICONS = {
