@@ -7,17 +7,20 @@ const STORAGE_KEY = "radha_cart";
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [toast, setToast] = useState("");
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) setItems(JSON.parse(saved));
     } catch {}
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+  }, [items, hydrated]);
 
   useEffect(() => {
     if (!toast) return;

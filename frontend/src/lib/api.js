@@ -2,7 +2,8 @@
 // err.response.data.message. Same-origin — auth uses an httpOnly cookie.
 async function request(method, path, { params, data } = {}) {
   const base = typeof window !== "undefined" ? window.location.origin : "";
-  const url = new URL(path.startsWith("http") ? path : `/api${path}`, base || "http://localhost:3000");
+  const path2 = path.startsWith("/api") ? path.slice(4) : path;
+  const url = new URL(path.startsWith("http") ? path : `/api${path2}`, base || "http://localhost:3000");
   if (params) Object.entries(params).forEach(([k, v]) => v != null && url.searchParams.set(k, v));
   const res = await fetch(url.toString(), {
     method,

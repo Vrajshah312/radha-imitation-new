@@ -1,45 +1,48 @@
 # Radha Imitation Jewellery — PRD
 
-## Original problem statement (this session)
-User imported an existing GitHub repo (Node/Express + Prisma/Postgres backend, React/Vite frontend) and asked to:
-- Convert the backend from Prisma + Postgres to a WordPress GraphQL (WooCommerce/WooGraphQL) data source.
-- Remove the old Prisma/Postgres layer, keep a thin Express layer that queries WordPress GraphQL.
-- Keep the existing demo data.
-- Add one Live/Demo toggle button in the header (visible to everyone) to switch data source.
+## Product
+Customer-facing storefront for an imitation-jewellery brand. Kundan, temple, meenakari and
+everyday-ethnic pieces. WordPress/WooCommerce is the source of truth for catalogue, accounts and orders.
 
-## Architecture (current)
-- Backend: Node/Express (ESM), runs on port 8001 via supervisor program `nodeapi` (the default `backend` uvicorn program is stopped; this is a Node app, not FastAPI).
-- Frontend: React + Vite, runs on port 3000 via `yarn start` (script added: `vite --host 0.0.0.0 --port 3000`).
-- Data source is per-request, chosen by the `X-Data-Mode: demo|live` header (AsyncLocalStorage in `lib/mode.js`).
-  - DEMO: in-memory data seeded from `backend/data/*.json` (products, categories). Admin edits persist until restart.
-  - LIVE: WordPress GraphQL / WooGraphQL via `lib/wpgraphql.js` + `lib/woo.js`. Endpoint set via `WORDPRESS_GRAPHQL_URL` (+ optional `WORDPRESS_AUTH_TOKEN`). Currently EMPTY — user will plug in later.
-- Auth (JWT), orders, users and banners are app-level and in-memory (shared by both modes).
-- Admin catalog writes (products/categories/inventory) are blocked in LIVE mode (409) — catalog is managed in WordPress. Allowed in DEMO.
-- Frontend: `ModeContext` (localStorage `radha_data_mode`, default demo) + `ModeToggle` in the Navbar header/mobile. Switching reloads so every page refetches.
+## Current architecture (Next.js — after conversion)
+- **Single Next.js 14 App Router app** in `/app/frontend`, intended for **Vercel** (serverless).
+  There is NO separate backend service in production — Next.js API route handlers do the server work.
+- **Live-only**: no Demo toggle, no custom admin dashboard. Catalogue is managed in WordPress wp-admin.
+- **Data**: `src/lib/wp.js` queries WordPress (WPGraphQL + WooGraphQL). When `WORDPRESS_GRAPHQL_URL`
+  is not set it falls back to bundled sample data (`/app/frontend/data/*.json`, 18 products, 3 categories)
+  so the app is fully previewable before a store is connected.
+- **Auth**: WordPress accounts via WPGraphQL JWT (`login` / `registerCustomer`). Session stored in a
+  signed **httpOnly cookie** (`src/lib/session.js`). Without WordPress, a demo fallback accepts any valid input.
+- **Orders (checkout)**: WooGraphQL `createOrder` mutation, **Cash on Delivery**. Without WordPress,
+  checkout returns a PREVIEW confirmation.
+- **API routes** (`src/app/api/*`): mode, products, products/[slug], categories, banners,
+  auth/{login,register,me,logout}, orders.
+- **Pages**: home, shop (+ [category] + [category]/[subcategory]), product/[slug], cart, checkout,
+  login, register, account, not-found. Cart is client-side (localStorage) with hydration-safe persistence.
 
-## Implemented (2026-06)
-- Removed Prisma/Postgres (deleted `lib/prisma.js`, `prisma/`, prisma config; dropped prisma deps from package.json).
-- Rewrote all models (Product, Category, Order, User, Banner) — mode-aware / in-memory.
-- Added WordPress GraphQL client + WooCommerce mappers (products, categories) that fail soft (empty results if endpoint missing/unreachable).
-- Added `/api/mode` endpoint (reports mode + wordpressConfigured).
-- Frontend Live/Demo toggle with a warning dot when Live is selected but no endpoint is configured.
+### Emergent preview only
+- Emergent ingress routes `/api` -> :8001 and the rest -> :3000. Next.js serves everything on :3000,
+  so a tiny **preview proxy** (`/app/backend/server.js`, supervisor program `nodeapi`) forwards :8001 -> :3000.
+  This shim is NOT used on Vercel (single origin there).
+- supervisor `frontend` runs `yarn start` = `next dev -p 3000 -H 0.0.0.0`.
 
-## Verified
-- Backend (curl + 29/29 pytest): health, /mode, demo catalogue with filters, live empty fail-soft, auth, admin write-guard (409 live / 201 demo), demo order create+list, live order friendly handling (no 500s).
-- Frontend (100% of tested flows): demo storefront, Demo/Live toggle, on-brand images load, live-mode banner shows only in Live and toggles correctly.
+## Connecting a real store / going live
+1. Set up WordPress + WooCommerce + WPGraphQL + WooGraphQL + WPGraphQL JWT Authentication
+   (WordPress ideally on a subdomain e.g. `cms.yourdomain.com`).
+2. In `/app/frontend/.env` (and in Vercel env): `WORDPRESS_GRAPHQL_URL=https://cms.yourdomain.com/graphql`,
+   `WORDPRESS_AUTH_TOKEN=<JWT for a user allowed to create orders>`, `SESSION_SECRET=<random>`.
+3. Restart (preview) / redeploy (Vercel). The storefront then uses real products, accounts and orders.
 
-## Implemented — follow-up iteration (2026-06)
-- On-brand imagery: replaced all picsum placeholders in `data/products.json` (18 products), Home category tiles and hero banner with real jewellery photos (images.unsplash.com).
-- Live-mode banner: `frontend/src/components/LiveModeBanner.jsx` — site-wide notice shown only in Live mode (green when a store is connected, amber warning when not) with a one-click "Switch to Demo".
-- Live orders: WooGraphQL `createOrder` mutation in `lib/woo.js` (Cash-on-Delivery, no gateway). `Order.create` is mode-aware; live orders are created in WordPress and mirrored in-memory for the session. Requires `WORDPRESS_GRAPHQL_URL` + `WORDPRESS_AUTH_TOKEN` (a WP user allowed to create orders). Fails soft with a clear 502 message when unavailable.
-
-
-## To connect a real store later
-1. Install WordPress + WooCommerce + WPGraphQL + WPGraphQL WooCommerce (WooGraphQL) plugins.
-2. Set `WORDPRESS_GRAPHQL_URL=https://your-store.com/graphql` in `backend/.env` and restart `nodeapi`.
-3. Tag products `bestseller`/`new` in WooCommerce for the storefront's Bestseller/New sections.
+## History
+- 2026-06: Converted backend from Prisma/Postgres -> WordPress GraphQL (WooGraphQL) with Demo/Live toggle (Express+Vite).
+- 2026-06: On-brand images, live-mode banner, live WooCommerce COD orders.
+- 2026-06: **Full rewrite to Next.js** (Vite+Express removed) — Live-only, WordPress JWT auth,
+  WooCommerce COD checkout, sample-data fallback for preview. Verified: 16/16 backend API tests,
+  all storefront flows (browse, filter, search, PDP, cart, register/login, protected redirects,
+  checkout preview order, account). Fixed cart-persists-on-reload bug (localStorage hydration flag).
 
 ## Backlog / next
-- P1: Real WooCommerce order creation (checkout mutation) in Live mode.
-- P2: Admin catalog management writing to WooCommerce via GraphQL mutations.
-- P2: Cache live catalogue responses to reduce GraphQL calls.
+- P1: Deploy to Vercel + connect `yourdomain.com`; WordPress on `cms.` subdomain.
+- P2: Order history on /account via WooGraphQL customer orders query.
+- P2: Real payment gateway (beyond COD) via WooCommerce hosted checkout or a gateway.
+- P3: SSR/SEO for product pages (currently client-fetched); server components for catalogue.
