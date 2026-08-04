@@ -25,7 +25,14 @@ User imported an existing GitHub repo (Node/Express + Prisma/Postgres backend, R
 - Frontend Live/Demo toggle with a warning dot when Live is selected but no endpoint is configured.
 
 ## Verified
-- Backend (curl): health, /mode, demo categories/products, live returns empty (not configured), admin login, admin write blocked in live (409) / allowed in demo (201).
+- Backend (curl + 29/29 pytest): health, /mode, demo catalogue with filters, live empty fail-soft, auth, admin write-guard (409 live / 201 demo), demo order create+list, live order friendly handling (no 500s).
+- Frontend (100% of tested flows): demo storefront, Demo/Live toggle, on-brand images load, live-mode banner shows only in Live and toggles correctly.
+
+## Implemented — follow-up iteration (2026-06)
+- On-brand imagery: replaced all picsum placeholders in `data/products.json` (18 products), Home category tiles and hero banner with real jewellery photos (images.unsplash.com).
+- Live-mode banner: `frontend/src/components/LiveModeBanner.jsx` — site-wide notice shown only in Live mode (green when a store is connected, amber warning when not) with a one-click "Switch to Demo".
+- Live orders: WooGraphQL `createOrder` mutation in `lib/woo.js` (Cash-on-Delivery, no gateway). `Order.create` is mode-aware; live orders are created in WordPress and mirrored in-memory for the session. Requires `WORDPRESS_GRAPHQL_URL` + `WORDPRESS_AUTH_TOKEN` (a WP user allowed to create orders). Fails soft with a clear 502 message when unavailable.
+
 
 ## To connect a real store later
 1. Install WordPress + WooCommerce + WPGraphQL + WPGraphQL WooCommerce (WooGraphQL) plugins.

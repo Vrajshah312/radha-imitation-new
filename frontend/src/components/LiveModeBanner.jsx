@@ -19,7 +19,7 @@ export default function LiveModeBanner() {
       {notReady ? (
         <span>
           <strong>Live mode is on</strong> — no WordPress store is connected yet, so no products will
-          show. Connect your store (WORDPRESS_GRAPHQL_URL) or
+          show. Connect your store (WORDPRESS_GRAPHQL_URL) or{" "}
           <button className="live-banner-link" onClick={() => switchMode("demo")} data-testid="live-banner-switch-demo">
             switch back to Demo
           </button>
@@ -27,7 +27,7 @@ export default function LiveModeBanner() {
       ) : (
         <span>
           <strong>Live store</strong> — you're viewing real products and prices from the connected
-          WordPress store.
+          WordPress store.{" "}
           <button className="live-banner-link" onClick={() => switchMode("demo")} data-testid="live-banner-switch-demo">
             Switch to Demo
           </button>
