@@ -24,79 +24,108 @@
   margin-top: 56px;
   align-items: start;
 }
+.shop-filter-toggle-btn {
+  display: none;
+}
+
 @media (max-width: 900px) {
-  .shop-page .shop-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .shop-sidebar {
-    position: static;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border-bottom: 1px solid var(--rule-soft);
-    padding-bottom: 20px;
-  }
-  .shop-sidebar h4 {
-    margin: 0 0 8px;
-    padding-bottom: 6px;
-    border-bottom: none;
-    font-size: 0.68rem;
+  .shop-filter-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--f-sans);
+    font-size: 0.78rem;
     letter-spacing: 0.12em;
-  }
-  .shop-cat-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .shop-cat-list > li {
-    display: inline-block;
-  }
-  .shop-cat-list > li:has(.shop-sub-list) {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-  }
-  .shop-cat-list > li > a {
-    display: inline-block;
-    padding: 6px 14px;
-    border: 1px solid var(--rule-soft);
+    text-transform: uppercase;
+    font-weight: 500;
     border-radius: 999px;
-    font-size: 0.82rem;
-    background: #fff;
-    transition: all 0.25s ease;
+    cursor: pointer;
+    margin-bottom: 24px;
+    width: 100%;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
   }
-  .shop-cat-list > li > a.is-active {
+  .shop-filter-toggle-btn:hover {
     background: var(--ink);
     color: var(--paper);
-    border-color: var(--ink);
+  }
+  .shop-filter-toggle-btn svg {
+    transition: transform 0.3s ease;
+  }
+  .shop-filter-toggle-btn:active {
+    transform: scale(0.98);
+  }
+
+  .shop-page .shop-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .shop-sidebar {
+    position: static;
+    display: none;
+    flex-direction: column;
+    gap: 28px;
+    background: var(--paper-warm);
+    padding: 28px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--rule-soft);
+    margin-bottom: 32px;
+    animation: slide-down 0.3s ease-out;
+  }
+  
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .shop-sidebar.is-visible {
+    display: flex;
+  }
+
+  .shop-cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .shop-cat-list > li > a,
+  .shop-sub-list a {
+    display: block;
+    padding: 8px 0;
+    font-size: 0.94rem;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink-soft);
+  }
+  .shop-cat-list > li > a.is-active,
+  .shop-sub-list a.is-active {
+    color: var(--gold);
+    font-weight: 500;
   }
   .shop-cat-list > li > a:hover {
-    padding-left: 14px;
+    padding-left: 4px;
+    color: var(--ink);
   }
   
   .shop-sub-list {
+    list-style: none;
+    margin: 4px 0 8px 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--rule-soft);
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 8px 0 0 0;
-    padding-left: 0;
-    border-left: none;
-    width: 100%;
+    flex-direction: column;
+    gap: 2px;
   }
   .shop-sub-list a {
-    display: inline-block;
-    padding: 4px 10px;
-    border: 1px solid var(--rule-soft);
-    border-radius: 999px;
-    font-size: 0.76rem;
-    background: #fff;
-  }
-  .shop-sub-list a.is-active {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    font-size: 0.88rem;
   }
   
   .shop-quick-filters {
@@ -106,8 +135,21 @@
     gap: 8px;
   }
   .shop-quick-filters button {
-    padding: 6px 14px;
+    padding: 9px 16px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--f-sans);
     font-size: 0.82rem;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .shop-quick-filters button.is-active,
+  .shop-quick-filters button:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
   }
 }
 

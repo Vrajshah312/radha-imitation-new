@@ -13,6 +13,7 @@ export default function ShopView({ categoryId, subcategoryId }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("featured");
+  const [showFilters, setShowFilters] = useState(false);
 
   const bestseller = searchParams.get("bestseller");
   const isNew = searchParams.get("isNew");
@@ -62,7 +63,12 @@ export default function ShopView({ categoryId, subcategoryId }) {
       </div>
 
       <div className="container shop-layout">
-        <aside className="shop-sidebar" data-testid="shop-sidebar">
+        <button className="shop-filter-toggle-btn" onClick={() => setShowFilters((s) => !s)} data-testid="shop-filter-toggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          {showFilters ? "Hide Filters" : "Filters & Categories"}
+        </button>
+
+        <aside className={`shop-sidebar ${showFilters ? "is-visible" : ""}`} data-testid="shop-sidebar">
           <div>
             <h4>Categories</h4>
             <ul className="shop-cat-list">
