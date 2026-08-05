@@ -197,8 +197,21 @@
 }
 
 @media (max-width: 900px) {
-  .nav-burger { display: flex; }
-  .nav-inner { grid-template-columns: auto 1fr auto; }
+  .nav-burger {
+    display: flex;
+    order: 1;
+  }
+  .nav-brand {
+    order: 2;
+    justify-self: center;
+  }
+  .nav-actions {
+    order: 3;
+  }
+  .nav-inner {
+    grid-template-columns: 44px 1fr auto;
+    gap: 12px;
+  }
 }
 
 /* ---------- mega menu ---------- */
