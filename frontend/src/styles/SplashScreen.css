@@ -1,69 +1,138 @@
+/* ============================================================
+   SPLASH SCREEN — Premium Brand Introduction
+   Dark full-screen overlay that slides up to reveal the site.
+   ============================================================ */
+
 .splash-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--obsidian);
-  color: var(--paper);
+  inset: 0;
   z-index: 9999;
+  background: var(--ink);        /* deep warm dark from brand palette */
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  transition: transform 1s cubic-bezier(0.7, 0, 0.1, 1), opacity 1s ease;
-}
-
-.splash-screen.is-hidden {
-  transform: translateY(-100%);
-  pointer-events: none;
-  opacity: 0;
-}
-
-.splash-content {
-  text-align: center;
   overflow: hidden;
+  /* Slide up on exit */
+  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+              opacity 0.9s ease;
 }
 
-.splash-title {
+.splash-screen.is-hiding {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Decorative border lines that grow in ---- */
+.splash-line {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: rgba(248, 245, 238, 0.15);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: lineGrow 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+.splash-line-top    { top: 40px; }
+.splash-line-bottom { bottom: 40px; transform-origin: right center; }
+
+@keyframes lineGrow {
+  to { transform: scaleX(1); }
+}
+
+/* ---- Central content ---- */
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+}
+
+/* ---- Logo ---- */
+.splash-logo-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(248, 245, 238, 0.06);
+  border: 1px solid rgba(248, 245, 238, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  opacity: 0;
+  transform: scale(0.85);
+  animation: logoReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+}
+
+.splash-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  /* Invert so white logo becomes visible on dark bg */
+  filter: brightness(0) invert(1);
+}
+
+@keyframes logoReveal {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---- Brand heading ---- */
+.splash-brand {
   font-family: var(--f-display);
-  font-size: 3rem;
-  letter-spacing: -0.05em;
+  font-size: clamp(3rem, 8vw, 5.5rem);
   font-weight: 400;
+  letter-spacing: -0.04em;
   line-height: 1;
+  margin: 0;
+  color: var(--paper);
   opacity: 0;
-  transform: translateY(40px);
-  animation: splashTitleReveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transform: translateY(30px);
+  animation: textRise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
 }
 
-.splash-subtitle {
+/* ---- Tagline ---- */
+.splash-tagline {
   font-family: var(--f-sans);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  margin-top: 1rem;
-  color: var(--highlight);
+  letter-spacing: 0.35em;
+  margin: 14px 0 0;
+  color: rgba(248, 245, 238, 0.5);
   opacity: 0;
-  transform: translateY(20px);
-  animation: splashSubtitleReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+  transform: translateY(16px);
+  animation: textRise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.75s forwards;
 }
 
-@keyframes splashTitleReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes textRise {
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes splashSubtitleReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---- Loading bar ---- */
+.splash-bar-wrap {
+  margin-top: 48px;
+  width: 120px;
+  height: 1px;
+  background: rgba(248, 245, 238, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 1s forwards;
 }
 
-@media (min-width: 768px) {
-  .splash-title {
-    font-size: 5rem;
-  }
+.splash-bar {
+  height: 100%;
+  width: 0%;
+  background: rgba(248, 245, 238, 0.6);
+  border-radius: 2px;
+  animation: barFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.1s forwards;
+}
+
+@keyframes barFill {
+  to { width: 100%; }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
 }

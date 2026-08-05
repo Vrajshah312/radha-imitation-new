@@ -3,41 +3,56 @@ import { useEffect, useState } from "react";
 import "@/styles/SplashScreen.css";
 
 export default function SplashScreen() {
-  const [show, setShow] = useState(false);
-  const [hiding, setHiding] = useState(false);
+  // Start visible by default (null = undecided, true = show, false = hide)
+  const [phase, setPhase] = useState("visible"); // "visible" | "hiding" | "gone"
 
   useEffect(() => {
-    // Only show on first visit in the current session
+    // If we've seen the splash this session, skip it instantly
     const hasSeenSplash = sessionStorage.getItem("splashShown");
-    
-    if (!hasSeenSplash) {
-      setShow(true);
-      sessionStorage.setItem("splashShown", "true");
-      
-      // Start hiding after 2.5 seconds
-      const hideTimer = setTimeout(() => {
-        setHiding(true);
-      }, 2500);
-
-      // Remove from DOM after transition completes (1s)
-      const removeTimer = setTimeout(() => {
-        setShow(false);
-      }, 3500);
-
-      return () => {
-        clearTimeout(hideTimer);
-        clearTimeout(removeTimer);
-      };
+    if (hasSeenSplash) {
+      setPhase("gone");
+      return;
     }
+
+    sessionStorage.setItem("splashShown", "true");
+
+    // Begin slide-up exit after 2.2s
+    const hideTimer = setTimeout(() => setPhase("hiding"), 2200);
+    // Remove from DOM after slide-up completes (another 900ms)
+    const doneTimer = setTimeout(() => setPhase("gone"), 3100);
+
+    return () => {
+      clearTimeout(hideTimer);
+      clearTimeout(doneTimer);
+    };
   }, []);
 
-  if (!show) return null;
+  if (phase === "gone") return null;
 
   return (
-    <div className={`splash-screen ${hiding ? "is-hidden" : ""}`}>
-      <div className="splash-content">
-        <h1 className="splash-title">Radha</h1>
-        <p className="splash-subtitle">Imitation Jewellery</p>
+    <div className={`splash-screen${phase === "hiding" ? " is-hiding" : ""}`} aria-hidden="true">
+      {/* Decorative thin border lines */}
+      <span className="splash-line splash-line-top" />
+      <span className="splash-line splash-line-bottom" />
+
+      <div className="splash-inner">
+        {/* Logo */}
+        <div className="splash-logo-wrap">
+          <img
+            src="/logo.png"
+            alt="Radha Imitation Jewellery"
+            className="splash-logo"
+          />
+        </div>
+
+        {/* Brand name */}
+        <h1 className="splash-brand">Radha</h1>
+        <p className="splash-tagline">Imitation Jewellery</p>
+
+        {/* Animated loading bar */}
+        <div className="splash-bar-wrap">
+          <div className="splash-bar" />
+        </div>
       </div>
     </div>
   );
