@@ -59,7 +59,8 @@ export default function Navbar() {
   }
 
   return (
-    <header className={`nav-header ${scrolled ? "is-scrolled" : ""}`} data-testid="site-header">
+    <>
+      <header className={`nav-header ${scrolled ? "is-scrolled" : ""}`} data-testid="site-header">
       <div className="nav-topline" data-testid="nav-topline">
         Free shipping across India on orders <em>over ₹999</em>
       </div>
@@ -141,8 +142,12 @@ export default function Navbar() {
           </form>
         </div>
       )}
+      </header>
 
       <div className={`nav-mobile ${mobileOpen ? "is-open" : ""}`}>
+        <button className="nav-mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
         <Link href="/" onClick={() => setMobileOpen(false)}>Home</Link>
         {categories.map((cat) => (
           <details key={cat.id}>
@@ -164,6 +169,6 @@ export default function Navbar() {
           <Link href="/login" onClick={() => setMobileOpen(false)}>Sign In</Link>
         )}
       </div>
-    </header>
+    </>
   );
 }

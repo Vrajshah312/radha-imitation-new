@@ -333,7 +333,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 200;
-  padding: 100px var(--gutter) 40px;
+  padding: 24px var(--gutter) 40px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -343,6 +343,19 @@
 }
 .nav-mobile.is-open { 
   transform: translateX(0); 
+}
+
+.nav-mobile-close {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 8px;
+  margin-bottom: 24px;
+}
+.nav-mobile-close svg {
+  display: block;
 }
 
 .nav-mobile > a, 
