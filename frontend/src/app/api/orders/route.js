@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { wpConfigured, getProduct, wpCreateOrder } from "@/lib/wp";
+import { wpConfigured, getProduct, wpCreateOrder, getCustomerOrders } from "@/lib/wp";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +51,8 @@ export async function POST(request) {
 }
 
 export async function GET() {
-  // Order history in Live mode is viewed in the customer's WordPress account.
-  return NextResponse.json({ orders: [] });
+  const session = getSession();
+  if (!session?.user) return NextResponse.json({ orders: [] });
+  const orders = await getCustomerOrders(session.wpToken);
+  return NextResponse.json({ orders });
 }

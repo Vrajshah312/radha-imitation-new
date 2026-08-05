@@ -128,6 +128,41 @@ export async function getProduct(slug) {
   }
 }
 
+// A signed-in customer's own WooCommerce orders (needs their WPGraphQL JWT).
+const CUSTOMER_ORDERS = `
+query MyOrders {
+  customer {
+    orders(first: 25) {
+      nodes {
+        orderNumber date status total
+        lineItems { nodes { quantity total product { node { name slug image { sourceUrl } } } } }
+      }
+    }
+  }
+}`;
+
+export async function getCustomerOrders(token) {
+  if (!wpConfigured() || !token) return [];
+  try {
+    const data = await wpQuery(CUSTOMER_ORDERS, {}, token);
+    const nodes = data.customer?.orders?.nodes || [];
+    return nodes.map((o) => ({
+      id: o.orderNumber,
+      date: o.date,
+      status: (o.status || "pending").toLowerCase(),
+      total: num(o.total),
+      items: (o.lineItems?.nodes || []).map((li) => ({
+        name: li.product?.node?.name,
+        qty: li.quantity,
+        image: li.product?.node?.image?.sourceUrl,
+      })),
+    }));
+  } catch (e) {
+    console.warn("[wp] getCustomerOrders:", e.message);
+    return [];
+  }
+}
+
 // ---- Auth (WPGraphQL JWT) ----
 const LOGIN = `mutation LogIn($username:String!,$password:String!){ login(input:{username:$username,password:$password}){ authToken user{ databaseId email firstName lastName } } }`;
 const REGISTER = `mutation Register($input:RegisterCustomerInput!){ registerCustomer(input:$input){ authToken customer{ databaseId email firstName lastName } } }`;

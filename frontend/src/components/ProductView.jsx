@@ -1,39 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import api from "@/lib/api";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
 import "@/styles/ProductDetail.css";
 
-export default function ProductView({ slug }) {
+// Receives product + related from the server component so the initial HTML is
+// fully rendered (good for SEO / Google indexing). Only interactivity is client.
+export default function ProductView({ product, related = [] }) {
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
-  const [related, setRelated] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
   const [qty, setQty] = useState(1);
-  const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setLoading(true); setActiveImage(0); setQty(1);
-    api.get(`/products/${slug}`)
-      .then((r) => { setProduct(r.data.product); return api.get("/products", { params: { category: r.data.product.category } }); })
-      .then((r) => { if (r) setRelated(r.data.products.filter((p) => p.id !== slug).slice(0, 4)); })
-      .catch(() => setProduct(null))
-      .finally(() => setLoading(false));
-  }, [slug]);
-
-  if (loading) return <div className="page-loader">Loading piece…</div>;
-  if (!product) {
-    return (
-      <div className="container" style={{ padding: "120px 0", textAlign: "center" }}>
-        <span className="eyebrow">404</span>
-        <h2 style={{ margin: "16px 0 20px" }}>Piece not found</h2>
-        <Link href="/shop" className="btn btn-outline"><span>Back to shop →</span></Link>
-      </div>
-    );
-  }
 
   const discount = product.mrp > product.price ? Math.round(((product.mrp - product.price) / product.mrp) * 100) : 0;
   function handleAdd() { addToCart(product, qty); setAdded(true); setTimeout(() => setAdded(false), 1600); }

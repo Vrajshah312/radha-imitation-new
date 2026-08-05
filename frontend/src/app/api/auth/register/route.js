@@ -10,13 +10,15 @@ export async function POST(request) {
   if (password.length < 6) return NextResponse.json({ message: "Password must be at least 6 characters" }, { status: 400 });
 
   try {
-    let user;
+    let user, wpToken;
     if (wpConfigured()) {
-      ({ user } = await wpRegister({ name, email, password }));
+      const r = await wpRegister({ name, email, password });
+      user = r.user;
+      wpToken = r.token;
     } else {
       user = { id: Date.now(), email: String(email).toLowerCase(), name, createdAt: new Date().toISOString(), demo: true };
     }
-    setSession({ user });
+    setSession({ user, wpToken });
     return NextResponse.json({ user }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ message: e.message || "Could not create your account" }, { status: 400 });

@@ -43,6 +43,8 @@ everyday-ethnic pieces. WordPress/WooCommerce is the source of truth for catalog
 
 ## Backlog / next
 - P1: Deploy to Vercel + connect `yourdomain.com`; WordPress on `cms.` subdomain.
-- P2: Order history on /account via WooGraphQL customer orders query.
 - P2: Real payment gateway (beyond COD) via WooCommerce hosted checkout or a gateway.
-- P3: SSR/SEO for product pages (currently client-fetched); server components for catalogue.
+
+## Implemented — follow-up (2026-06)
+- SEO: product pages are now **server-rendered** (`app/product/[slug]/page.jsx` is a server component fetching data server-side) with `generateMetadata` (title/description/OpenGraph) and **Product JSON-LD** structured data. Initial HTML contains name/price/description/images — Google-indexable. `ProductView` now takes props instead of client-fetching.
+- Order history: session cookie now stores the customer's WPGraphQL JWT; `getCustomerOrders(token)` queries `customer.orders`; `GET /api/orders` returns them; the `/account` page renders an order-history list (empty state until a store is connected).

@@ -9,13 +9,15 @@ export async function POST(request) {
   if (!email || !password) return NextResponse.json({ message: "Email and password are required" }, { status: 400 });
 
   try {
-    let user;
+    let user, wpToken;
     if (wpConfigured()) {
-      ({ user } = await wpLogin(email, password));
+      const r = await wpLogin(email, password);
+      user = r.user;
+      wpToken = r.token;
     } else {
       user = { id: 1, email: String(email).toLowerCase(), name: String(email).split("@")[0], createdAt: new Date().toISOString(), demo: true };
     }
-    setSession({ user });
+    setSession({ user, wpToken });
     return NextResponse.json({ user });
   } catch (e) {
     return NextResponse.json({ message: e.message || "Could not sign you in" }, { status: 401 });
