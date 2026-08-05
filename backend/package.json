@@ -1,9 +1,0 @@
-{
-  "name": "radha-preview-proxy",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "description": "Preview-only proxy that forwards Emergent :8001 traffic to the Next.js app on :3000. Not used on Vercel.",
-  "scripts": { "start": "node server.js" },
-  "dependencies": { "http-proxy": "^1.18.1" }
-}

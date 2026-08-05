@@ -1,7 +1,8 @@
-// PREVIEW-ONLY shim. The Emergent preview ingress routes /api -> :8001 and
-// everything else -> :3000. Since this is now a single Next.js app (API routes
-// live inside Next on :3000), this tiny proxy forwards :8001 traffic to Next.
-// It is NOT part of the Vercel deployment — on Vercel everything is one origin.
+// PREVIEW-ONLY dev shim (NOT used on Vercel).
+// The Emergent preview ingress sends /api -> :8001 and everything else -> :3000.
+// This app is a single Next.js server on :3000 (its API routes live under /api),
+// so this tiny proxy forwards :8001 traffic to Next on :3000 during preview.
+// On Vercel everything is one origin, so this file is ignored (see .vercelignore).
 import http from "node:http";
 import httpProxy from "http-proxy";
 

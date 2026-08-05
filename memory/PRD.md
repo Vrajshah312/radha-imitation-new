@@ -22,8 +22,9 @@ everyday-ethnic pieces. WordPress/WooCommerce is the source of truth for catalog
 
 ### Emergent preview only
 - Emergent ingress routes `/api` -> :8001 and the rest -> :3000. Next.js serves everything on :3000,
-  so a tiny **preview proxy** (`/app/backend/server.js`, supervisor program `nodeapi`) forwards :8001 -> :3000.
-  This shim is NOT used on Vercel (single origin there).
+  so a tiny **preview proxy** (`/app/frontend/scripts/preview-proxy.mjs`, supervisor program `nodeapi`,
+  http-proxy devDependency) forwards :8001 -> :3000. This is dev-only, ignored on Vercel (`.vercelignore`
+  excludes `scripts/`). The old `/app/backend` folder has been removed — the app is now frontend-only.
 - supervisor `frontend` runs `yarn start` = `next dev -p 3000 -H 0.0.0.0`.
 
 ## Connecting a real store / going live
