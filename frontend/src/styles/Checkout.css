@@ -1,5 +1,10 @@
-/* CHECKOUT */
+/* ============================================================
+   CHECKOUT PAGE — Radha Imitation Jewellery
+   ============================================================ */
+
 .checkout-page.container { padding-top: 56px; padding-bottom: 96px; }
+
+/* ── Heading ── */
 .checkout-heading {
   padding-bottom: 20px;
   margin-bottom: 32px;
@@ -14,6 +19,7 @@
 }
 .checkout-heading h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
 
+/* ── Layout ── */
 .checkout-layout {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -24,13 +30,14 @@
   .checkout-layout { grid-template-columns: 1fr; }
 }
 
+/* ── Form sections ── */
 .checkout-form h3 {
   font-family: var(--f-display);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: -0.005em;
   padding-bottom: 10px;
-  margin: 24px 0 20px;
+  margin: 28px 0 18px;
   border-bottom: 1px solid var(--rule-soft);
 }
 .checkout-form h3:first-of-type { margin-top: 0; }
@@ -44,32 +51,163 @@
   .checkout-form-row { grid-template-columns: 1fr; }
 }
 
-.payment-note {
-  padding: 20px;
-  border: 1px dashed var(--rule-soft);
+/* ── Auto-filled badge ── */
+.auto-filled {
+  font-size: 0.7rem;
+  font-family: var(--f-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  background: rgba(76, 100, 73, 0.1);
+  padding: 2px 6px;
+  border-radius: 20px;
+  margin-left: 6px;
+  font-weight: 500;
+}
+
+.pincode-loading {
+  font-size: 0.78rem;
   color: var(--ink-mute);
-  font-size: 0.86rem;
-  line-height: 1.6;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* ── Shipping info banner ── */
+.shipping-info-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-family: var(--f-sans);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 4px 0 8px;
+  letter-spacing: 0.01em;
+}
+.shipping-info-banner.is-local {
+  background: rgba(76, 100, 73, 0.08);
+  color: var(--sage);
+  border: 1px solid rgba(76, 100, 73, 0.2);
+}
+.shipping-info-banner.is-outstation {
+  background: rgba(162, 106, 16, 0.07);
+  color: var(--amber-signal);
+  border: 1px solid rgba(162, 106, 16, 0.2);
+}
+
+/* ── Payment cards ── */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
-.checkout-summary {
-  padding: 28px;
-  border: 1px solid var(--rule-soft);
+.payment-card {
+  display: block;
+  border: 1.5px solid var(--rule-soft);
+  border-radius: 10px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  background: var(--paper);
+}
+.payment-card:hover {
+  border-color: var(--ink-mute);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.payment-card.is-selected {
+  border-color: var(--ink);
   background: #fff;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* Hide native radio */
+.payment-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.payment-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.payment-card-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Razorpay inline SVG logo */
+.razorpay-logo {
+  width: 110px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+/* Generic icon for COD */
+.payment-card-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-warm);
+  border-radius: 8px;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.payment-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.payment-card-title {
+  font-family: var(--f-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.payment-card-subtitle {
+  font-family: var(--f-sans);
+  font-size: 0.76rem;
+  color: var(--ink-mute);
+}
+
+/* Check circle — hidden unless selected */
+.payment-card-check {
+  color: var(--ink-mute);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.payment-card.is-selected .payment-card-check {
+  opacity: 1;
+  color: var(--ink);
+}
+
+/* ── Order summary ── */
+.checkout-summary {
+  padding: 24px;
+  border: 1px solid var(--rule-soft);
+  background: var(--paper);
   border-radius: 12px;
   position: sticky;
   top: 130px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
 }
 .checkout-summary h3 {
   font-family: var(--f-display);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   letter-spacing: -0.005em;
-  margin: 0 0 8px;
-  padding-bottom: 8px;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--rule-soft);
   font-weight: 500;
 }
@@ -77,17 +215,45 @@
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--ink-soft);
   gap: 12px;
+  border-bottom: 1px solid var(--hair);
 }
 .checkout-line em {
   color: var(--ink-mute);
   font-family: var(--f-display);
   font-style: italic;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
 }
 
+.summary-divider {
+  height: 1px;
+  background: var(--rule-soft);
+  margin: 8px 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  padding: 6px 0;
+}
+.summary-row.summary-total {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.shipping-free { color: var(--sage); font-weight: 500; }
+.shipping-pending { color: var(--ink-mute); font-style: italic; font-size: 0.82rem; }
+
+/* ── Success ── */
 .checkout-success.container {
   padding: 120px 20px;
   text-align: center;
@@ -118,7 +284,5 @@
 }
 
 @media (max-width: 900px) {
-  .checkout-summary {
-    position: static;
-  }
+  .checkout-summary { position: static; }
 }
