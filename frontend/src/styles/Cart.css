@@ -169,3 +169,34 @@
   color: var(--ink);
   padding: 4px 0;
 }
+
+@media (max-width: 600px) {
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+    grid-template-areas:
+      "media info"
+      "media total";
+    gap: 12px 16px;
+    align-items: start;
+  }
+  .cart-item-media {
+    grid-area: media;
+    width: 80px;
+    height: 100px;
+  }
+  .cart-item-info {
+    grid-area: info;
+  }
+  .cart-item-total {
+    grid-area: total;
+    align-self: start;
+    padding-top: 0;
+    text-align: left;
+    margin-top: 4px;
+  }
+  .cart-item-row {
+    margin-top: 8px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}

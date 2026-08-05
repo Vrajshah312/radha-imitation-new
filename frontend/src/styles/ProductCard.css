@@ -87,3 +87,13 @@
   transition: color 0.25s ease;
 }
 .product-card:hover .product-name { color: var(--gold); }
+
+@media (max-width: 900px) {
+  .product-quickadd {
+    opacity: 1;
+    transform: translateY(0);
+    padding: 8px 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+}

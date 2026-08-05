@@ -26,6 +26,18 @@
 }
 @media (max-width: 900px) {
   .shop-layout { grid-template-columns: 1fr; gap: 24px; }
+  .shop-sidebar {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 24px;
+  }
+  .shop-sidebar > div {
+    flex: 1 1 200px;
+  }
 }
 
 .shop-sidebar {

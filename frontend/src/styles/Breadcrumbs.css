@@ -32,3 +32,15 @@
   text-transform: none;
   font-size: 0.9rem;
 }
+
+@media (max-width: 600px) {
+  .breadcrumbs-inner {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .breadcrumbs-inner::-webkit-scrollbar {
+    display: none;
+  }
+}

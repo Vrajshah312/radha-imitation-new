@@ -20,16 +20,24 @@
   gap: 20px;
 }
 @media (max-width: 900px) {
-  .pdp-gallery { position: static; grid-template-columns: 1fr; }
+  .pdp-gallery {
+    position: static;
+    grid-template-columns: 1fr;
+  }
+  .pdp-main-image {
+    order: 1;
+  }
+  .pdp-thumbs {
+    order: 2;
+    flex-direction: row;
+    overflow-x: auto;
+  }
 }
 
 .pdp-thumbs {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-@media (max-width: 900px) {
-  .pdp-thumbs { flex-direction: row; overflow-x: auto; }
 }
 .pdp-thumb {
   width: 80px;

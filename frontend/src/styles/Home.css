@@ -63,6 +63,18 @@
 .hero-meta strong { color: var(--ink); font-family: var(--f-display); font-weight: 500; font-size: 1.15rem; }
 .hero-meta span { display: flex; flex-direction: column; }
 
+@media (max-width: 600px) {
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    text-align: center;
+  }
+  .hero-meta span {
+    align-items: center;
+  }
+}
+
 .hero-media {
   position: relative;
   aspect-ratio: 4 / 5;

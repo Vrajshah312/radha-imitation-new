@@ -212,6 +212,14 @@ p  { margin: 0 0 1em; color: var(--ink-soft); }
   outline: none;
   box-shadow: 0 0 0 3px rgba(28, 26, 23, 0.05);
 }
+
+@media (max-width: 720px) {
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    font-size: 16px;
+  }
+}
 .form-error {
   background: rgba(122, 36, 54, 0.06);
   border: 1px solid rgba(122, 36, 54, 0.25);

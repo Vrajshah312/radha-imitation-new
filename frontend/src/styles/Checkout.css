@@ -116,3 +116,9 @@
   font-size: 2rem;
   color: var(--ink);
 }
+
+@media (max-width: 900px) {
+  .checkout-summary {
+    position: static;
+  }
+}

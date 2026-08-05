@@ -97,3 +97,11 @@
 .order-thumbs img { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; }
 .order-item-meta { text-align: right; display: flex; flex-direction: column; gap: 2px; }
 .order-item-meta strong { font-size: 1.05rem; }
+
+@media (max-width: 520px) {
+  .profile-page .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+}

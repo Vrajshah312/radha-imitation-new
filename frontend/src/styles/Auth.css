@@ -6,6 +6,7 @@
 }
 @media (max-width: 900px) {
   .auth-page { grid-template-columns: 1fr; }
+  .auth-visual { display: none; }
 }
 
 .auth-visual {

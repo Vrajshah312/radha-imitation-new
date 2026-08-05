@@ -36,6 +36,17 @@ export default function Navbar() {
     setMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   function openMenu() { clearTimeout(closeTimer.current); setMenuOpen(true); }
   function scheduleClose() { closeTimer.current = setTimeout(() => setMenuOpen(false), 180); }
 
@@ -93,7 +104,7 @@ export default function Navbar() {
           <img src="/logo.png" alt="Radha Imitation Jewellery" className="nav-brand-logo" />
         </Link>
 
-        <button className="nav-burger" aria-label="Toggle menu" onClick={() => setMobileOpen((o) => !o)} data-testid="nav-burger">
+        <button className={`nav-burger ${mobileOpen ? "is-active" : ""}`} aria-label="Toggle menu" onClick={() => setMobileOpen((o) => !o)} data-testid="nav-burger">
           <span /><span /><span />
         </button>
 
